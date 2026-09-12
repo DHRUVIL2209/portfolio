@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Dhruvil Rana — software and game development portfolio." />
+  <meta name="theme-color" id="themeColorMeta" content="#f3efe6" />
+  <title>Dhruvil Rana — Portfolio</title>
+  <script>
+    (() => {
+      try {
+        const savedTheme = localStorage.getItem('dhruvil-portfolio-theme');
+        if (savedTheme === 'dark') {
+          document.documentElement.dataset.theme = 'dark';
+          document.getElementById('themeColorMeta')?.setAttribute('content', '#282828');
+        }
+      } catch (_) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/cascadia-code@5.3.0/400.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/cascadia-code@5.3.0/500.css">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+
+  <div class="original-static-background" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <button class="brand" data-panel="0" aria-label="Go to home">
+      <span class="brand-signature">code_by_dhruvil</span>
+    </button>
+
+    <nav class="desktop-nav" aria-label="Portfolio sections">
+      <button data-panel="1">About</button>
+      <button data-panel="2">Work</button>
+      <button data-panel="7">Hackathons</button>
+      <button data-panel="8">Contact</button>
+    </nav>
+
+    <div class="header-tools">
+      <div class="counter" aria-label="Current section">
+        <span id="currentPanel">01</span><span class="counter-line"></span><span id="totalPanels">09</span>
+      </div>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark appearance" title="Switch appearance">
+        <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20.2 15.3A8.3 8.3 0 0 1 8.7 3.8 8.6 8.6 0 1 0 20.2 15.3Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="3.7" fill="none" stroke="currentColor" stroke-width="1.7"/>
+          <path d="M12 2.2v2.2M12 19.6v2.2M21.8 12h-2.2M4.4 12H2.2M18.9 5.1l-1.55 1.55M6.65 17.35 5.1 18.9M18.9 18.9l-1.55-1.55M6.65 6.65 5.1 5.1" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="viewport" id="viewport">
+    <div class="track" id="track">
+      <section class="panel hero-panel active" data-name="Home">
+
+        <div class="hero-copy reveal-group">
+          <p class="eyebrow">Software developer · Game developer</p>
+          <h1 class="typing-name" aria-label="Dhruvil Rana.">
+            <span class="typed-line" id="typedFirst" aria-hidden="true"></span>
+            <span class="typed-line typed-accent" id="typedLast" aria-hidden="true"></span>
+          </h1>
+          <p class="hero-intro">I build interactive systems, games and digital experiences — from database-driven applications to mobile game worlds.</p>
+          <div class="hero-actions">
+            <button class="text-link" data-panel="2">Explore work <span>↗</span></button>
+            <a class="text-link muted" href="mailto:dgrana2209@gmail.com">Email me <span>↗</span></a>
+          </div>
+        </div>
+        <div class="scroll-cue">
+          <span class="wheel"></span>
+          <span>Scroll to move sideways</span>
+          <span class="arrow">→</span>
+        </div>
+      </section>
+
+      <section class="panel about-panel" data-name="About">
+        <div class="about-layout reveal-group">
+          <div class="section-label">
+            <span class="mini-dot"></span>
+            <span>About / Skills</span>
+          </div>
+
+          <div class="about-main">
+            <h2>Technical by training.<br><em>Playful by instinct.</em></h2>
+            <p class="lead">Bachelor of Computer Applications graduate from CVM University with a 9.42/10 CGPA, focused on building practical software and interactive projects.</p>
+            <p>I work across web development, databases, mobile development, game development and 3D workflows. My recent focus is independent game development with Unity, C# and Blender.</p>
+          </div>
+
+          <div class="skill-stack">
+            <div class="skill-row"><span>01</span><strong>Programming</strong><p>C#, PHP, JavaScript, Dart, VB.NET · C++, Java, Python</p></div>
+            <div class="skill-row"><span>02</span><strong>Web / Mobile</strong><p>HTML, CSS, ASP.NET, Flutter</p></div>
+            <div class="skill-row"><span>03</span><strong>Data</strong><p>MySQL, Microsoft SQL Server, SQLite</p></div>
+            <div class="skill-row"><span>04</span><strong>Game / 3D</strong><p>Unity, URP, Blender, PBR, UVs, baking</p></div>
+            <div class="skill-row"><span>05</span><strong>2D Animation</strong><p>Synfig Studio, basic keyframe animation</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel project-panel accent-coral" data-name="Frolic Waterways">
+        <div class="project-copy reveal-group">
+          <p class="project-kicker">01 / Independent game · May 2026 — Present</p>
+          <h2>Frolic<br>Waterways.</h2>
+          <p class="project-summary">An Android-focused 3D endless runner where a boat navigates dynamically generated waterways through a three-lane movement system.</p>
+          <div class="project-meta">
+            <span>Unity</span><span>C#</span><span>Blender</span><span>Android</span><span>URP</span>
+          </div>
+          <ul class="project-points">
+            <li>Swipe controls, collision/game-over systems and chase-camera movement.</li>
+            <li>Reusable randomized environment segments with anti-repetition safeguards.</li>
+            <li>Blender → Unity production pipeline with mobile optimization planning.</li>
+          </ul>
+          <div class="project-links">
+            <span class="status-pill">In development</span>
+          </div>
+        </div>
+        <button class="gallery-trigger" data-gallery="frolic" aria-label="Open Frolic Waterways screenshot gallery">
+          <span class="stack-border border-a"></span>
+          <span class="stack-border border-b"></span>
+          <img src="assets/screenshots/frolic-cover.webp" alt="Frolic Waterways project logo">
+          <span class="gallery-plus">+</span>
+          <span class="gallery-caption">Screenshots <b>05</b></span>
+        </button>
+      </section>
+
+      <section class="panel project-panel accent-sage" data-name="Savvy.shop">
+        <div class="project-copy reveal-group">
+          <p class="project-kicker">02 / BCA Semester VI · 2024 — 2025</p>
+          <h2 class="single-line-title">Savvy.shop</h2>
+          <p class="project-summary">A multi-role e-commerce platform inspired by Amazon, with separate workflows for customers, vendors, administrators and delivery personnel.</p>
+          <div class="project-meta">
+            <span>PHP</span><span>MySQL</span><span>JavaScript</span><span>HTML</span><span>CSS</span>
+          </div>
+          <ul class="project-points">
+            <li>Product discovery, cart, ordering, tracking, reviews and ratings.</li>
+            <li>Vendor inventory, sales history and role-specific workflows.</li>
+            <li>Admin approvals, delivery assignment, stock and sales reporting.</li>
+          </ul>
+          <br>
+          <div class="project-links"><a class="text-link" href="https://github.com/DHRUVIL2209/Savvy.shop" target="_blank" rel="noopener noreferrer">Repository <span>↗</span></a></div>
+        </div>
+        <button class="gallery-trigger" data-gallery="savvy" aria-label="Open Savvy.shop screenshot gallery">
+          <span class="stack-border border-a"></span><span class="stack-border border-b"></span>
+          <img src="assets/screenshots/savvy-cover.webp" alt="Savvy.shop project logo">
+          <span class="gallery-plus">+</span><span class="gallery-caption">Screenshots <b>26</b></span>
+        </button>
+      </section>
+
+      <section class="panel project-panel accent-blue" data-name="Skroll">
+        <div class="project-copy reveal-group">
+          <p class="project-kicker">03 / BCA Semester V · 2024</p>
+          <h2>Skroll.</h2>
+          <p class="project-summary">An Instagram-inspired social platform with validated accounts, media posts, social relationships, user discovery and in-app notifications.</p>
+          <div class="project-meta">
+            <span>ASP.NET</span><span>VB.NET</span><span>MSSQL</span><span>JavaScript</span>
+          </div>
+          <ul class="project-points">
+            <li>Image/video posts, feeds, profiles and follow/unfollow relationships.</li>
+            <li>User search and notification workflows.</li>
+            <li>Relational database structures for users, posts, likes and comments.</li>
+          </ul>
+          <br>
+          <div class="project-links"><a class="text-link" href="https://github.com/DHRUVIL2209/Skroll" target="_blank" rel="noopener noreferrer">Repository <span>↗</span></a></div>
+        </div>
+        <button class="gallery-trigger" data-gallery="skroll" aria-label="Open Skroll screenshot gallery">
+          <span class="stack-border border-a"></span><span class="stack-border border-b"></span>
+          <img src="assets/screenshots/skroll-cover.webp" alt="Skroll project logo">
+          <span class="gallery-plus">+</span><span class="gallery-caption">Screenshots <b>19</b></span>
+        </button>
+      </section>
+
+      <section class="panel project-panel accent-gold" data-name="Stint22">
+        <div class="project-copy reveal-group">
+          <p class="project-kicker">04 / BCA Semester IV · 2023 — 2024</p>
+          <h2>Stint<span>22.</span></h2>
+          <p class="project-summary">A web-based scheduling and task-management system with category-specific dashboards, collaborative task assignment and reporting.</p>
+          <div class="project-meta">
+            <span>PHP</span><span>MySQL</span><span>JavaScript</span><span>HTML</span><span>CSS</span>
+          </div>
+          <ul class="project-points">
+            <li>Authentication, validation, password reset and task CRUD.</li>
+            <li>Business, Teacher and Student dashboard flows.</li>
+            <li>Teams, member management, scheduling and reporting.</li>
+          </ul>
+          <br>
+          <div class="project-links"><a class="text-link" href="https://github.com/DHRUVIL2209/Stint22" target="_blank" rel="noopener noreferrer">Repository <span>↗</span></a></div>
+        </div>
+        <button class="gallery-trigger" data-gallery="stint" aria-label="Open Stint22 screenshot gallery">
+          <span class="stack-border border-a"></span><span class="stack-border border-b"></span>
+          <img src="assets/screenshots/stint-cover.webp" alt="Stint22 project logo">
+          <span class="gallery-plus">+</span><span class="gallery-caption">Screenshots <b>14</b></span>
+        </button>
+      </section>
+
+      <section class="panel project-panel accent-violet" data-name="Space22">
+        <div class="project-copy reveal-group">
+          <p class="project-kicker">05 / Independent game · June 2025</p>
+          <h2>Space<span>22.</span></h2>
+          <p class="project-summary">My early 2D space-fighter project: player-controlled movement, enemy encounters, combat mechanics and progression across two playable levels.</p>
+          <div class="project-meta"><span>2D Game</span><span>Two levels</span><span>Independent project</span></div>
+          <ul class="project-points">
+            <li>Built as an early foundation for more complex game-development work.</li>
+            <li>Planned for publication on itch.io after portfolio cleanup.</li>
+          </ul>
+        </div>
+        <button class="gallery-trigger" data-gallery="space" aria-label="Open Space22 screenshot gallery">
+          <span class="stack-border border-a"></span><span class="stack-border border-b"></span>
+          <img src="assets/screenshots/space-cover.webp" alt="Space22 main menu cover">
+          <span class="gallery-plus">+</span><span class="gallery-caption">Screenshots <b>05</b></span>
+        </button>
+      </section>
+
+      <section class="panel hackathon-panel" data-name="Hackathons">
+        <div class="hack-layout reveal-group">
+          <div class="section-label"><span class="mini-dot"></span><span>Hackathons</span></div>
+          <div class="hack-heading">
+            <h2>Built fast.<br><em>Learned faster.</em></h2>
+            <p>Team projects shaped around limited development windows and practical workflows.</p>
+          </div>
+          <article class="hack-card card-one">
+            <p class="mono">CodeManthan 1.0 · BCA Semester V</p>
+            <h3>Alumni Association Platform</h3>
+            <p>Event dashboards, job posts, alumni search, profiles, donations, invitations, ratings and feedback.</p>
+            <div class="hack-details">
+              <div class="hack-contrib"><span>Stack</span><p>ASP.NET · Visual Basics · MSSQL</p></div>
+              <div class="hack-contrib"><span>My focus</span><p>UI · Login/signup · Profiles · Dashboard · Database · Validation</p></div>
+            </div>
+          </article>
+          <article class="hack-card card-two">
+            <p class="mono">CVMU Hackathon 3.0 · BCA Semester VI</p>
+            <h3>Billing & Inventory App</h3>
+            <p>Offline-capable billing and inventory workflow for small businesses, with reusable item data and bill history.</p>
+            <div class="hack-details">
+              <div class="hack-contrib"><span>Stack</span><p>Flutter · Dart · PHP · SQLite</p></div>
+              <div class="hack-contrib"><span>My focus</span><p>UI · Login/Signup · Billing functionality · Sharing functionality · Reusable items functionality</p></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel contact-panel" data-name="Contact">
+        <div class="contact-layout reveal-group">
+          <h2>Have something<br>interesting in mind?</h2>
+          <a class="big-email" href="mailto:dgrana2209@gmail.com">dgrana2209@gmail.com <span>↗</span></a>
+          <div class="contact-meta">
+            <div><span>Based in</span><strong>Borsad, Gujarat, India</strong></div>
+            <div><span>Links</span><p><a href="https://github.com/DHRUVIL2209" target="_blank" rel="noopener noreferrer">GitHub</a><br><!-- <a href="#" class="disabled-link" aria-disabled="true">LinkedIn — adding soon</a> --></p></div>
+            <div><span>Languages</span><p>Gujarati — Native<br>Hindi — Fluent<br>English — Proficient</p></div>
+          </div>
+        </div>
+        <div class="signature">code_by_dhruvil</div>
+      </section>
+    </div>
+  </main>
+
+  <div class="progress-wrap" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
+
+  <div class="gallery-overlay" id="galleryOverlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="galleryTitle">
+    <div class="gallery-shell" data-lenis-prevent>
+      <div class="gallery-topbar">
+        <div><span class="mono">PROJECT GALLERY</span><h2 id="galleryTitle">Screenshots</h2></div>
+        <button class="icon-button" id="closeGallery" aria-label="Close screenshot gallery">×</button>
+      </div>
+      <div class="gallery-grid" id="galleryGrid"></div>
+    </div>
+  </div>
+
+  <div class="image-viewer" id="imageViewer" data-lenis-prevent aria-hidden="true" role="dialog" aria-modal="true" aria-label="Full size screenshot">
+    <button class="icon-button viewer-close" id="closeViewer" aria-label="Close full-size screenshot">×</button>
+    <img id="viewerImage" src="" alt="">
+    <p id="viewerCaption"></p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
