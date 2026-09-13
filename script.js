@@ -80,27 +80,16 @@ function updateCounter(index) {
   currentPanel.textContent = String(clampIndex(index) + 1).padStart(2, '0');
 }
 
-function updateSceneProgress(progress) {
-  const safeProgress = Math.max(0, Math.min(1, Number(progress) || 0));
-
-  if (desktopQuery.matches && !reducedMotion.matches) {
-    // Deliberately restrained: the background drifts left only a little while
-    // the separate SUV advances a little to the right.
-  } else {
-  }
-}
 
 function updateDesktopUI(progress) {
   const safeProgress = Math.max(0, Math.min(1, progress || 0));
   progressBar.style.width = `${safeProgress * 100}%`;
-  updateSceneProgress(safeProgress);
   const nearestIndex = Math.round(safeProgress * (panels.length - 1));
   updateCounter(nearestIndex);
   setActive(nearestIndex);
 }
 
 function updateMobileUI() {
-  updateSceneProgress(0);
   const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
   const limit = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
   progressBar.style.width = `${Math.max(0, Math.min(1, scrollTop / limit)) * 100}%`;
@@ -429,13 +418,10 @@ document.querySelectorAll('[data-panel]').forEach(element => {
   element.addEventListener('click', () => goToPanel(element.dataset.panel));
 });
 
-let modalScrollY = 0;
-
 function pausePageScroll() {
   // Do not stop Lenis here. The gallery itself is a nested scroll container
   // marked with data-lenis-prevent, so wheel/touch input inside the modal is
   // handed back to the browser while the underlying page stays locked.
-  modalScrollY = window.scrollY || document.documentElement.scrollTop || 0;
   document.body.classList.add('modal-open');
   document.documentElement.classList.add('modal-open');
 }
