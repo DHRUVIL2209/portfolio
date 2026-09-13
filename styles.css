@@ -4,20 +4,12 @@
   --ink: #282828;
   --muted: #6f6b64;
   --line: rgba(40,40,40,.17);
-  --grid-line: rgba(40,40,40,.035);
-  --ring-line: rgba(40,40,40,.065);
-  --shape-line: rgba(40,40,40,.18);
   --surface-soft: rgba(243,239,230,.60);
   --surface-card: rgba(243,239,230,.72);
   --shadow-soft: rgba(40,40,40,.08);
   --body-copy: #56524c;
   --hero-copy: #4f4c47;
-  --header-glass: rgba(243,239,230,.97);
   --overlay-bg: rgba(243,239,230,.98);
-  --inverse-muted: #aaa59d;
-  --inverse-line: rgba(243,239,230,.20);
-  --inverse-line-strong: rgba(243,239,230,.55);
-  --inverse-ring: rgba(243,239,230,.12);
   --coral: #c86e55;
   --sage: #7b8b74;
   --blue: #718895;
@@ -26,15 +18,7 @@
   --header-h: 86px;
   --pad: clamp(28px, 5vw, 82px);
   --ease: cubic-bezier(.2,.8,.2,1);
-  --panel-bg-art: url("assets/ui/portfolio_background_light.png");
-  --panel-overlay: rgba(243,239,230,.80);
-  --hero-panel-overlay: rgba(243,239,230,.70);
-  --contact-bg: #282828;
-  --contact-fg: #f3efe6;
-  --contact-bg-art: url("assets/ui/portfolio_background_dark.png");
-  --contact-overlay: rgba(40,40,40,.86);
 }
-
 
 html[data-theme="dark"] {
   --paper: #282828;
@@ -42,1681 +26,69 @@ html[data-theme="dark"] {
   --ink: #f3efe6;
   --muted: #b8b1a6;
   --line: rgba(243,239,230,.18);
-  --grid-line: rgba(243,239,230,.045);
-  --ring-line: rgba(243,239,230,.085);
-  --shape-line: rgba(243,239,230,.20);
   --surface-soft: rgba(50,50,50,.72);
   --surface-card: rgba(50,50,50,.84);
   --shadow-soft: rgba(0,0,0,.22);
   --body-copy: #cec7bb;
   --hero-copy: #d6cfc3;
-  --header-glass: rgba(40,40,40,.97);
   --overlay-bg: rgba(40,40,40,.985);
-  --inverse-muted: #6f6b64;
-  --inverse-line: rgba(40,40,40,.20);
-  --inverse-line-strong: rgba(40,40,40,.55);
-  --inverse-ring: rgba(40,40,40,.12);
-  --panel-bg-art: url("assets/ui/portfolio_background_dark.png");
-  --panel-overlay: rgba(40,40,40,.78);
-  --hero-panel-overlay: rgba(40,40,40,.66);
-  --contact-bg: #f3efe6;
-  --contact-fg: #282828;
-  --contact-bg-art: url("assets/ui/portfolio_background_light.png");
-  --contact-overlay: rgba(243,239,230,.86);
 }
-
-
-html[data-theme="dark"] .noise { mix-blend-mode: screen; opacity:.035; }
 
 * { box-sizing: border-box; }
 
-/* Lenis keeps native document scrolling semantics while smoothing wheel input. */
-html.lenis, html.lenis body { height:auto; }
-.lenis.lenis-smooth { scroll-behavior:auto !important; }
-.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior:contain; }
-.lenis.lenis-stopped { overflow:clip; }
-.lenis.lenis-smooth iframe { pointer-events:none; }
+html.lenis,
+html.lenis body { height: auto; }
 
-html { scroll-behavior: auto; width:100%; min-height:100%; overflow-x:hidden; overflow-y:auto; color-scheme:light; }
-html[data-theme="dark"] { color-scheme:dark; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: clip; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+
+html {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-behavior: auto;
+  color-scheme: light;
+}
+
+html[data-theme="dark"] { color-scheme: dark; }
+
 body {
   margin: 0;
-  width:100%;
-  min-height:100%;
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: visible;
   background: var(--paper);
   color: var(--ink);
   font-family: "Bricolage Grotesque", Arial, sans-serif;
-  overflow-x:hidden;
-  overflow-y:visible;
-}
-button, a { font: inherit; }
-a { color: inherit; }
-button { color: inherit; }
-::selection { background: var(--ink); color: var(--paper); }
-
-.noise {
-  position: fixed; inset: 0; z-index: 10000; pointer-events: none; opacity: .075;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.28'/%3E%3C/svg%3E");
-  mix-blend-mode: multiply;
-  transform:translateZ(0); backface-visibility:hidden;
-}
-
-.site-header {
-  position: fixed; top: 0; left: 0; right: 0; height: var(--header-h); z-index: 100;
-  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
-  padding: 0 var(--pad); border-bottom: 1px solid var(--line);
-  background: color-mix(in srgb, var(--paper) 90%, transparent);
-  backdrop-filter: blur(10px);
-}
-.brand { justify-self: start; border: 0; background: transparent; padding: 0; cursor: pointer; display:flex; align-items:center; }
-.brand-signature { font-family:"Cascadia Code", "Cascadia Mono", "IBM Plex Mono", monospace; font-size:.78rem; font-weight:500; letter-spacing:-.035em; color:var(--muted); transition:color .25s var(--ease); }
-.brand:hover .brand-signature, .brand:focus-visible .brand-signature { color:var(--ink); }
-.desktop-nav { display:flex; gap: 28px; }
-.desktop-nav button { border:0; background:transparent; padding:8px 0; cursor:pointer; color:var(--muted); font-size:.88rem; position:relative; }
-.desktop-nav button::after { content:""; position:absolute; left:0; bottom:4px; width:0; height:1px; background:var(--ink); transition:width .25s var(--ease); }
-.desktop-nav button:hover { color:var(--ink); }
-.desktop-nav button:hover::after { width:100%; }
-.counter { justify-self:end; display:flex; align-items:center; gap:9px; font-family:"IBM Plex Mono", monospace; font-size:.72rem; color:var(--muted); }
-.counter-line { width: 28px; height:1px; background:var(--line); }
-.header-tools { justify-self:end; display:flex; align-items:center; gap:15px; }
-.theme-toggle { width:36px; height:36px; border:1px solid var(--line); background:transparent; color:var(--muted); display:grid; place-items:center; padding:0; cursor:pointer; transition:color .25s var(--ease), border-color .25s var(--ease), transform .25s var(--ease), background-color .25s var(--ease); }
-.theme-toggle:hover, .theme-toggle:focus-visible { color:var(--ink); border-color:var(--ink); transform:rotate(5deg); outline:none; }
-.theme-icon { width:17px; height:17px; grid-area:1 / 1; transition:opacity .25s var(--ease), transform .35s var(--ease); }
-.theme-icon-sun { opacity:0; transform:rotate(-35deg) scale(.72); }
-.theme-icon-moon { opacity:1; transform:rotate(0) scale(1); }
-html[data-theme="dark"] .theme-icon-sun { opacity:1; transform:rotate(0) scale(1); }
-html[data-theme="dark"] .theme-icon-moon { opacity:0; transform:rotate(35deg) scale(.72); }
-
-.viewport {
-  position: relative; width:100%; height:100vh; overflow:hidden;
-  scrollbar-width:none;
-  /* Keep horizontal overscroll contained, but allow vertical wheel input to chain to
-     the document. ScrollTrigger uses that document scroll to drive the horizontal track. */
-  overscroll-behavior-x:none;
-  overscroll-behavior-y:auto;
-}
-.viewport::-webkit-scrollbar { display:none; }
-.track { height:100%; display:flex; width:max-content; will-change:transform; backface-visibility:hidden; transform-style:preserve-3d; }
-
-/* CDN fallback only. Normal desktop motion is driven by GSAP ScrollTrigger. */
-html.native-horizontal, html.native-horizontal body { height:100%; overflow:hidden; }
-html.native-horizontal .viewport { position:fixed; inset:0; overflow-x:auto; overflow-y:hidden; scroll-snap-type:x mandatory; }
-html.native-horizontal .panel { scroll-snap-align:start; }
-
-.panel {
-  position: relative; flex: 0 0 100vw; width:100vw; height:100vh; overflow:hidden;
-  padding: calc(var(--header-h) + 5vh) var(--pad) 6vh;
-  border-right:1px solid var(--line);
-  background:
-    linear-gradient(var(--panel-overlay), var(--panel-overlay)),
-    var(--panel-bg-art);
-  background-size: cover, cover;
-  background-position: center center, center center;
-  background-repeat: no-repeat, no-repeat;
-  backface-visibility:hidden;
-}
-.panel::after { display:none; }
-
-.reveal-group > * { opacity:0; transform:translateY(22px); transition:opacity .7s var(--ease), transform .7s var(--ease); }
-.panel.active .reveal-group > * { opacity:1; transform:none; }
-.panel.active .reveal-group > *:nth-child(2) { transition-delay:.06s; }
-.panel.active .reveal-group > *:nth-child(3) { transition-delay:.12s; }
-.panel.active .reveal-group > *:nth-child(4) { transition-delay:.18s; }
-.panel.active .reveal-group > *:nth-child(5) { transition-delay:.24s; }
-
-.eyebrow, .project-kicker, .mono, .section-label { font-family:"IBM Plex Mono", monospace; text-transform:uppercase; letter-spacing:.08em; font-size:.69rem; }
-.eyebrow, .project-kicker, .section-label { color:var(--muted); }
-
-.hero-panel { display:flex; align-items:center; background: linear-gradient(var(--hero-panel-overlay), var(--hero-panel-overlay)), var(--panel-bg-art); background-size: cover, cover; background-position: center center, center center; background-repeat: no-repeat, no-repeat; }
-
-.hero-copy { width:min(900px, 72vw); position:relative; z-index:3; }
-.hero-copy h1 { margin:12px 0 20px; font-family:"Syne", "Bricolage Grotesque", Arial, sans-serif; font-size:clamp(5.1rem, 10.2vw, 9.7rem); line-height:.79; letter-spacing:-.075em; font-weight:700; }
-.typing-name { min-height:1.58em; }
-.typed-line { display:block; min-height:.79em; width:max-content; max-width:100%; }
-.typed-line.typed-accent { font-weight:500; }
-.typed-line.typing::after { content:""; display:inline-block; width:.055em; height:.76em; margin-left:.055em; background:var(--ink); vertical-align:-.015em; animation:typeCaret .72s steps(1,end) infinite; }
-@keyframes typeCaret { 50% { opacity:0; } }
-.hero-intro { width:min(600px, 62vw); font-size:clamp(1.04rem, 1.45vw, 1.35rem); line-height:1.5; color:var(--hero-copy); }
-.hero-actions { display:flex; gap:28px; margin-top:30px; }
-.text-link { border:0; background:none; padding:4px 0; text-decoration:none; cursor:pointer; border-bottom:1px solid var(--ink); }
-.text-link span { display:inline-block; transition:transform .2s var(--ease); }
-.text-link:hover span { transform:translate(3px,-3px); }
-.text-link.muted { color:var(--muted); border-color:var(--line); }
-.hero-index { position:absolute; right:var(--pad); bottom:11vh; display:grid; text-align:right; gap:5px; }
-.hero-index span { font-family:"IBM Plex Mono", monospace; font-size:.62rem; letter-spacing:.15em; color:var(--muted); border-bottom:1px solid var(--line); padding-bottom:5px; }
-.scroll-cue { position:absolute; left:var(--pad); bottom:3.8vh; display:flex; align-items:center; gap:10px; font-family:"IBM Plex Mono", monospace; font-size:.64rem; color:var(--muted); }
-.wheel { width:17px; height:25px; border:1px solid var(--muted); border-radius:12px; position:relative; }
-.wheel::after { content:""; position:absolute; width:2px; height:5px; background:var(--ink); left:7px; top:5px; border-radius:1px; animation:wheel 1.7s ease infinite; }
-@keyframes wheel { 0%{opacity:0;transform:translateY(0)} 30%{opacity:1} 80%{opacity:0;transform:translateY(8px)} 100%{opacity:0} }
-.arrow { font-size:1rem; animation:nudge 1.5s ease-in-out infinite; }
-@keyframes nudge { 50% { transform:translateX(5px); } }
-.hero-pattern .shape { position:absolute; display:grid; place-items:center; color:var(--shape-line); }
-.shape.circle { border:1px solid var(--shape-line); border-radius:50%; }
-.shape.square { border:1px solid var(--line); }
-.shape.plus { font-family:"IBM Plex Mono", monospace; font-size:1.2rem; }
-.s1{width:44px;height:44px;right:18vw;top:27vh}.s2{width:58px;height:58px;right:9vw;top:39vh;transform:rotate(13deg)}.s3{width:16px;height:16px;right:24vw;top:53vh}.s4{width:20px;height:20px;right:31vw;top:30vh;transform:rotate(45deg)}.s5{right:13vw;top:63vh}.s6{right:28vw;top:67vh}
-
-.about-layout { height:100%; display:grid; grid-template-columns: .56fr 1.35fr 1fr; gap:clamp(24px,4vw,72px); align-items:center; }
-.section-label { align-self:start; padding-top:11vh; display:flex; align-items:center; gap:9px; }
-.mini-dot { width:7px;height:7px;background:var(--ink);border-radius:50%; }
-.about-main h2, .hack-heading h2, .animation-copy h2, .contact-layout h2 { font-size:clamp(3.2rem,5.7vw,6.2rem); line-height:.94; letter-spacing:-.055em; font-weight:500; margin:0 0 28px; }
-.about-main h2 em, .hack-heading h2 em, .animation-copy h2 em { font-weight:400; }
-.about-main .lead { font-size:clamp(1.15rem,1.5vw,1.45rem); line-height:1.48; }
-.about-main > p:last-child { color:var(--muted); line-height:1.58; max-width:650px; }
-.skill-stack { border-top:1px solid var(--ink); }
-.skill-row { display:grid; grid-template-columns:32px 120px 1fr; gap:10px; align-items:start; padding:16px 0; border-bottom:1px solid var(--line); }
-.skill-row span { font-family:"IBM Plex Mono",monospace; font-size:.64rem; color:var(--muted); padding-top:3px; }
-.skill-row strong { font-size:.9rem; }
-.skill-row p { margin:0; color:var(--muted); font-size:.86rem; line-height:1.45; }
-
-.project-panel::before { content:""; position:absolute; left:0; top:0; bottom:0; width:8px; background:var(--accent, var(--coral)); }
-.accent-coral { --accent: var(--coral); }.accent-sage{--accent:var(--sage)}.accent-blue{--accent:var(--blue)}.accent-gold{--accent:var(--gold)}.accent-violet{--accent:var(--violet)}
-.project-copy { position:absolute; left:var(--pad); top:50%; transform:translateY(-43%); width:min(48vw, 740px); z-index:3; }
-.project-copy h2 { font-size:clamp(4.5rem,7.8vw,8.8rem); line-height:.82; letter-spacing:-.07em; font-weight:500; margin:12px 0 24px; }
-.project-copy h2 span { font-weight:400; }
-.project-copy h2.single-line-title { white-space:nowrap; font-size:clamp(4rem,7.1vw,8rem); }
-.project-summary { max-width:670px; font-size:clamp(1.05rem,1.45vw,1.35rem); line-height:1.52; margin:0 0 22px; }
-.project-meta { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px; }
-.project-meta span, .status-pill { font-family:"IBM Plex Mono",monospace; font-size:.62rem; text-transform:uppercase; letter-spacing:.06em; border:1px solid var(--line); padding:7px 9px; background:var(--surface-soft); }
-.project-points { list-style:none; margin:0; padding:0; max-width:680px; border-top:1px solid var(--line); }
-.project-points li { padding:9px 0 9px 18px; border-bottom:1px solid var(--line); color:var(--body-copy); font-size:.91rem; position:relative; }
-.project-points li::before { content:"↳"; position:absolute; left:0; color:var(--accent); }
-.project-links { display:flex; align-items:center; gap:14px; margin-top:19px; }
-.disabled-link { color:var(--muted); text-decoration:none; border-bottom:1px dashed var(--line); cursor:default; }
-
-.gallery-trigger { position:absolute; right:8vw; top:50%; transform:translateY(-45%); width:clamp(260px,28vw,470px); aspect-ratio:1/1; padding:0; border:1px solid var(--ink); background:var(--paper-2); cursor:pointer; z-index:4; box-shadow:0 18px 42px var(--shadow-soft); }
-.gallery-trigger img { width:100%; height:100%; object-fit:cover; display:block; position:relative; z-index:2; filter:saturate(.90) contrast(1.02); transition:filter .35s var(--ease), transform .35s var(--ease); }
-.stack-border { position:absolute; inset:0; border:1px solid var(--ink); z-index:0; transition:transform .45s var(--ease), opacity .45s var(--ease); opacity:.4; }
-.border-a { transform:translate(0,0); }.border-b{transform:translate(0,0)}
-.gallery-trigger:hover .border-a { transform:translate(11px,-11px) rotate(1deg); opacity:.65; }
-.gallery-trigger:hover .border-b { transform:translate(21px,-21px) rotate(-1.2deg); opacity:.35; }
-.gallery-trigger:hover img { filter:saturate(1); transform:translate(-3px,3px); }
-.gallery-plus { position:absolute; right:0; top:0; z-index:5; width:38px;height:38px;display:grid;place-items:center;background:var(--ink);color:var(--paper);font-family:"IBM Plex Mono",monospace;font-size:1.05rem; transition:transform .3s var(--ease); }
-.gallery-trigger:hover .gallery-plus { transform:rotate(90deg); }
-.gallery-caption { position:absolute; left:14px; bottom:14px; z-index:5; font-family:"IBM Plex Mono",monospace; font-size:.61rem; text-transform:uppercase; letter-spacing:.06em; background:var(--paper); padding:7px 9px; border:1px solid var(--line); }
-.gallery-caption b { margin-left:8px; color:var(--accent); }
-
-.hack-layout { height:100%; display:grid; grid-template-columns:.46fr 1.03fr 1fr 1fr; gap:clamp(20px,3vw,52px); align-items:center; }
-.hack-heading p { color:var(--muted); max-width:480px; line-height:1.55; }
-.hack-card { align-self:center; min-height:390px; border:1px solid var(--ink); padding:28px; display:flex; flex-direction:column; justify-content:space-between; background:var(--surface-card); transition:transform .35s var(--ease), box-shadow .35s var(--ease); }
-.hack-card:hover { transform:translateY(-8px); box-shadow:10px 10px 0 var(--shadow-soft); }
-.hack-card h3 { font-size:clamp(1.7rem,2.3vw,2.7rem); line-height:1.05; letter-spacing:-.04em; margin:12px 0; }
-.hack-card > p:not(.mono) { line-height:1.55; color:var(--muted); }
-.hack-details { display:grid; gap:13px; margin-top:16px; }
-.hack-contrib { border-top:1px solid var(--line); padding-top:13px; }
-.hack-contrib span { font-family:"IBM Plex Mono",monospace;font-size:.62rem;text-transform:uppercase;color:var(--muted); }
-.hack-contrib p { margin:8px 0 0; line-height:1.5; }
-.card-one { transform:rotate(-1deg); }.card-two { transform:rotate(1deg); }
-.card-one:hover,.card-two:hover { transform:translateY(-8px) rotate(0); }
-
-.animation-layout { height:100%; display:grid; grid-template-columns:.5fr 1fr 1fr; grid-template-rows:1fr 1fr; gap:28px 40px; align-items:center; }
-.animation-layout .section-label { grid-row:1 / span 2; align-self:start; }
-.animation-copy { grid-column:2 / span 2; align-self:end; }
-.animation-copy p { color:var(--muted); max-width:690px; line-height:1.55; }
-.animation-card { border-top:1px solid var(--ink); padding-top:14px; display:grid; grid-template-columns:1.05fr 1fr; gap:18px; align-items:center; align-self:start; }
-.animation-card h3 { margin:7px 0; font-size:1.5rem; }
-.animation-card p { margin:0; color:var(--muted); font-size:.88rem; line-height:1.45; }
-.fake-player { height:170px; border:1px solid var(--line); background:linear-gradient(#c8d6da 0 62%, #d7ccb9 62% 100%); position:relative; overflow:hidden; }
-.plane { position:absolute; left:10%; top:35%; font-size:2.3rem; animation:plane 5s ease-in-out infinite; }
-.runway { position:absolute;left:0;right:0;bottom:20px;height:28px;background:#6f6e6b;transform:skewX(-14deg); }
-.cloud { position:absolute; width:48px;height:16px;border-radius:20px;background:rgba(243,239,230,.9); }.cloud::before,.cloud::after{content:"";position:absolute;background:inherit;border-radius:50%;}.cloud::before{width:22px;height:22px;left:9px;top:-10px}.cloud::after{width:18px;height:18px;left:26px;top:-5px}.c1{left:18%;top:22%}.c2{right:12%;top:16%;transform:scale(.7)}
-@keyframes plane { 0%{transform:translate(-20px,-30px) rotate(5deg)} 55%{transform:translate(120px,24px) rotate(-4deg)} 100%{transform:translate(260px,35px) rotate(0)} }
-.road-scene { background:#c7bdab; }.road { position:absolute;left:0;right:0;bottom:28px;height:70px;background:#686765; }.car { position:absolute;left:18%;bottom:62px;width:62px;height:26px;border-radius:8px 16px 4px 4px;background:var(--coral);color:transparent;animation:car 3.8s ease-in-out infinite; }.car::before,.car::after{content:"";position:absolute;width:13px;height:13px;border-radius:50%;background:var(--ink);bottom:-8px}.car::before{left:8px}.car::after{right:8px}.road-line{position:absolute;bottom:57px;width:38px;height:3px;background:var(--paper)}.r1{left:12%}.r2{left:45%}.r3{left:78%}
-@keyframes car { 0%{transform:translateX(-45px)} 50%{transform:translateX(115px)} 100%{transform:translateX(255px)} }
-
-.contact-panel { background: linear-gradient(var(--contact-overlay), var(--contact-overlay)), var(--contact-bg-art), var(--contact-bg); background-size:cover,cover,auto; background-position:center center,center center,center center; background-repeat:no-repeat,no-repeat,no-repeat; color:var(--contact-fg); }
-.contact-panel::after { border-color:var(--inverse-ring); }
-.contact-layout { height:100%; display:flex; flex-direction:column; justify-content:center; width:min(1100px,82vw); }
-.contact-layout .eyebrow { color:var(--inverse-muted); }
-.contact-layout h2 { font-size:clamp(4.6rem,8vw,9rem); line-height:.88; max-width:1100px; margin:12px 0 32px; }
-.big-email { width:max-content; max-width:100%; font-size:clamp(1.05rem,2vw,2rem); text-decoration:none; border-bottom:1px solid var(--inverse-line-strong); padding-bottom:7px; }
-.big-email span { display:inline-block; transition:transform .25s var(--ease); }.big-email:hover span{transform:translate(5px,-5px)}
-.contact-meta { display:grid; grid-template-columns:1fr 1fr 1fr; gap:38px; margin-top:9vh; padding-top:18px; border-top:1px solid var(--inverse-line); }
-.contact-meta span { font-family:"IBM Plex Mono",monospace; font-size:.61rem; text-transform:uppercase; letter-spacing:.08em; color:var(--inverse-muted); }
-.contact-meta strong,.contact-meta p { display:block;margin:8px 0 0;font-size:.9rem;line-height:1.6;font-weight:400; }
-.contact-panel .disabled-link { color:var(--inverse-muted);border-color:var(--inverse-line) }
-.signature { position:absolute;right:var(--pad);bottom:3vh;font-family:"Cascadia Code", "Cascadia Mono", "IBM Plex Mono", monospace;font-size:.72rem;color:var(--inverse-muted); }
-
-.progress-wrap { position:fixed; left:0; right:0; bottom:0; height:3px; z-index:120; background:color-mix(in srgb, var(--ink) 10%, transparent); }
-.progress-bar { height:100%; width:0; background:var(--ink); transform-origin:left; }
-
-.gallery-overlay, .image-viewer { position:fixed; inset:0; z-index:500; background:var(--overlay-bg); opacity:0; visibility:hidden; transition:opacity .32s var(--ease), visibility .32s; }
-.gallery-overlay.open, .image-viewer.open { opacity:1; visibility:visible; }
-.gallery-shell { height:100%; overflow-y:auto; overflow-x:hidden; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; touch-action:pan-y; padding:clamp(24px,5vw,74px); transform:translateY(18px); transition:transform .45s var(--ease); }
-.gallery-overlay.open .gallery-shell{transform:none}
-.gallery-topbar { display:flex; align-items:flex-start; justify-content:space-between; padding-bottom:20px; border-bottom:1px solid var(--ink); }
-.gallery-topbar h2{margin:5px 0 0;font-size:clamp(2.8rem,5vw,5.8rem);letter-spacing:-.055em;font-weight:500}
-.icon-button { width:48px;height:48px;border:1px solid var(--ink);background:transparent;font-size:1.7rem;line-height:1;cursor:pointer;transition:background .2s,color .2s,transform .2s; }
-.icon-button:hover{background:var(--ink);color:var(--paper);transform:rotate(5deg)}
-.gallery-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; padding:28px 0; }
-.gallery-thumb { border:1px solid var(--line); background:transparent; padding:0; cursor:zoom-in; position:relative; overflow:hidden; }
-.gallery-thumb img{width:100%;display:block;aspect-ratio:16/9;object-fit:cover;transition:transform .45s var(--ease),filter .45s;filter:saturate(.8)}
-.gallery-thumb:hover img{transform:scale(1.025);filter:saturate(1)}
-.gallery-thumb span{position:absolute;left:10px;bottom:10px;background:var(--paper);padding:6px 8px;border:1px solid var(--line);font-family:"IBM Plex Mono",monospace;font-size:.6rem}
-.image-viewer { z-index:700; background:rgba(20,20,20,.97); display:grid; place-items:center; padding:5vh 5vw; overflow:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; touch-action:pan-y pinch-zoom; }
-.image-viewer img{max-width:90vw;max-height:82vh;object-fit:contain;box-shadow:0 20px 80px rgba(0,0,0,.35);transform:scale(.97);transition:transform .35s var(--ease)}
-.image-viewer.open img{transform:scale(1)}
-.viewer-close{position:absolute;right:4vw;top:4vh;border-color:rgba(255,255,255,.55);color:white}.viewer-close:hover{background:white;color:#181818}
-#viewerCaption{position:absolute;bottom:2.3vh;color:#c7c1b7;font-family:"IBM Plex Mono",monospace;font-size:.65rem;letter-spacing:.06em}
-body.modal-open, html.modal-open{overflow:hidden!important}
-.gallery-overlay.open{pointer-events:auto}
-.gallery-shell[data-lenis-prevent]{overscroll-behavior:contain}
-
-
-@media (max-width: 1100px) {
-  .project-copy { width:51vw; }
-  .gallery-trigger { right:5vw; width:34vw; }
-  .about-layout { grid-template-columns:.4fr 1.2fr 1fr; }
-  .hack-layout { grid-template-columns:.35fr 1fr 1fr; grid-template-rows:auto auto; }
-  .hack-heading { grid-column:2 / span 2; }
-  .hack-card.card-one{grid-column:2}.hack-card.card-two{grid-column:3}
-  .hack-layout .section-label{grid-row:1 / span 2}
-}
-
-@media (max-width: 900px) {
-  :root { --header-h: 72px; --pad: 22px; }
-  html { width:100%; height:auto; overflow-x:hidden; overflow-y:auto; }
-  body { width:100%; height:auto !important; overflow-x:hidden; overflow-y:visible; }
-  .site-header { grid-template-columns:1fr auto; backdrop-filter:none; background:var(--header-glass); }
-  .desktop-nav { display:none; }
-  .header-tools { grid-column:2; }
-  .viewport { position:static; width:100%; height:auto; overflow:visible; }
-  .track { display:block; width:100%; height:auto; transform:none !important; }
-  .panel { width:100%; height:auto; min-height:100svh; padding:calc(var(--header-h) + 42px) var(--pad) 58px; overflow:hidden; border-right:0; border-bottom:1px solid var(--line); }
-  .panel::after{width:70vw;height:70vw}
-  .hero-panel { min-height:100svh; }
-  .hero-copy { width:100%; }
-  .hero-copy h1 { font-size:clamp(5rem,24vw,8.4rem); }
-  .hero-intro { width:92%; }
-  .hero-index { bottom:13vh; right:var(--pad); }
-  .scroll-cue span:nth-child(2){font-size:0}.scroll-cue span:nth-child(2)::after{content:"Scroll to explore";font-size:.64rem}
-  .arrow{transform:rotate(90deg);animation:nudgeMobile 1.5s ease-in-out infinite}@keyframes nudgeMobile{50%{transform:rotate(90deg) translateX(5px)}}
-  .about-layout,.hack-layout,.animation-layout { display:block; height:auto; }
-  .section-label { padding-top:0; margin-bottom:52px; }
-  .about-main h2,.hack-heading h2,.animation-copy h2,.contact-layout h2 { font-size:clamp(3.4rem,14vw,6rem); }
-  .skill-stack { margin-top:42px; }
-  .skill-row { grid-template-columns:32px 105px 1fr; }
-  .project-panel { min-height:118svh; display:flex; flex-direction:column; justify-content:flex-start; }
-  .project-copy { position:relative; left:auto; top:auto; transform:none; width:100%; padding-top:42px; }
-  .project-copy h2 { font-size:clamp(4.5rem,20vw,7.4rem); }
-  .project-copy h2.single-line-title { font-size:clamp(3.2rem,15.7vw,5.8rem); white-space:nowrap; }
-  .gallery-trigger { position:relative; right:auto; top:auto; transform:translate3d(0,24px,0); opacity:0; width:min(78vw,440px); align-self:flex-end; margin-top:48px; margin-right:8px; transition:opacity .62s var(--ease), transform .62s var(--ease), box-shadow .35s var(--ease); }
-  .project-panel.active .gallery-trigger { opacity:1; transform:translate3d(0,0,0); transition-delay:.16s; }
-  .hack-heading { margin-bottom:42px; }
-  .hack-card { margin:18px 0; min-height:320px; }
-  .animation-copy{margin-bottom:36px}.animation-card{margin:20px 0;grid-template-columns:1fr}.fake-player{height:200px}
-  .contact-panel { min-height:100svh; }
-  .contact-layout { width:100%; min-height:calc(100svh - var(--header-h) - 100px); justify-content:center; }
-  .contact-meta { grid-template-columns:1fr; gap:24px; margin-top:7vh; }
-  .gallery-grid { grid-template-columns:1fr; }
-  .progress-wrap{top:0;bottom:auto;z-index:150}
-  .reveal-group > * { opacity:0; transform:translateY(22px); transition:opacity .7s var(--ease), transform .7s var(--ease); }
-  .panel.active .reveal-group > * { opacity:1; transform:none; }
-  .panel.active .reveal-group > *:nth-child(2) { transition-delay:.06s; }
-  .panel.active .reveal-group > *:nth-child(3) { transition-delay:.12s; }
-  .panel.active .reveal-group > *:nth-child(4) { transition-delay:.18s; }
-  .panel.active .reveal-group > *:nth-child(5) { transition-delay:.24s; }
-}
-
-@media (max-width: 560px) {
-  .brand-signature { font-size:.7rem; }
-  .hero-actions { flex-direction:column; align-items:flex-start; gap:14px; }
-  .skill-row { grid-template-columns:28px 1fr; }
-  .skill-row p { grid-column:2; }
-  .project-points li { font-size:.86rem; }
-  .gallery-trigger { width:88vw; }
-  .animation-card { display:block; }.animation-card > div:last-child{margin-top:14px}
-  .gallery-shell { padding:18px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,*::before,*::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important; }
-}
-
-/* v15: wave-only background; old geometric hero ornaments removed. */
-.hero-pattern { display:none !important; }
-
-
-/* v18 — restrained static-road scene.
-   One viewport-sized background crossfades with the theme. On desktop it pans
-   only a few vw while the separate v15 SUV drifts slightly to the right. */
-:root {
-  --scene-x: 0vw;
-  --car-x: 0vw;
-  --car-bottom: 9.9vh;
-}
-
-.scene-background {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-  background: var(--paper);
-  transition: background-color .72s var(--ease);
-}
-.scene-image {
-  position: absolute;
-  inset: -3vh -3vw;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  will-change: transform, opacity;
-  transform: translate3d(var(--scene-x), 0, 0);
-  transition: opacity .72s var(--ease);
-}
-.scene-light {
-  background-image: url("assets/ui/static_scene_light_desktop.webp");
-  opacity: 1;
-}
-.scene-dark {
-  background-image: url("assets/ui/static_scene_dark_desktop.webp");
-  opacity: 0;
-}
-html[data-theme="dark"] .scene-light { opacity: 0; }
-html[data-theme="dark"] .scene-dark { opacity: 1; }
-
-.scene-car {
-  position: fixed;
-  left: 39.7vw;
-  bottom: var(--car-bottom);
-  width: clamp(62px, 5.2vw, 94px);
-  height: auto;
-  z-index: 1;
-  pointer-events: none;
-  transform: translate3d(var(--car-x), 0, 0);
-  transform-origin: 50% 100%;
-  opacity: .92;
-  will-change: transform;
-  transition: filter .72s var(--ease), bottom .72s var(--ease), opacity .72s var(--ease);
-}
-html[data-theme="dark"] {
-  --car-bottom: 8.15vh;
-}
-html[data-theme="dark"] .scene-car {
-  filter: invert(1) sepia(.12) saturate(.65) brightness(1.08);
-  opacity: .86;
-}
-
-/* Portfolio content stays above the road/car; the header remains the top layer. */
-.viewport { z-index: 2; }
-.track { position: relative; z-index: 2; }
-.site-header { z-index: 100; }
-.panel,
-.hero-panel {
-  background: transparent !important;
-  border-right: 0 !important;
-}
-.project-panel::before { display: none !important; }
-
-/* Preserve the deliberately inverted Contact finish while keeping the scene architecture simple. */
-.contact-panel {
-  background: color-mix(in srgb, var(--contact-bg) 95%, transparent) !important;
-}
-
-@media (max-width: 900px) {
-  :root {
-    --scene-x: 0vw !important;
-    --car-x: 0vw !important;
-    --car-bottom: 8.0vh;
-  }
-  html[data-theme="dark"] { --car-bottom: 8.0vh; }
-  .scene-image {
-    inset: 0;
-    transform: none !important;
-    background-size: cover;
-    background-position: center center;
-  }
-  .scene-light { background-image: url("assets/ui/static_scene_light_mobile.webp"); }
-  .scene-dark { background-image: url("assets/ui/static_scene_dark_mobile.webp"); }
-  .scene-car {
-    left: 36vw;
-    width: clamp(64px, 18vw, 82px);
-    transform: none !important;
-    filter: none;
-    opacity: .9;
-  }
-  html[data-theme="dark"] .scene-car {
-    filter: invert(1) sepia(.12) saturate(.65) brightness(1.08);
-    opacity: .84;
-  }
-  .panel { border-bottom: 0 !important; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scene-image,
-  .scene-car { transform: none !important; }
-}
-
-/* v19 — refined static road scene.
-   The original 3:1 artwork is preserved proportionally inside wider 2400x1080
-   canvases, so it is never vertically stretched. The image itself pans slightly
-   within the viewport while the v15 SUV stays grounded on the flat road. */
-:root {
-  --scene-pan: 0vw;
-  --car-x: 0vw;
-  --car-bottom: 10.25vh;
-}
-
-.scene-background {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-  background: var(--paper);
-  transition: background-color .72s var(--ease);
-}
-
-.scene-image {
-  position: absolute;
-  inset: 0;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: calc(50% + var(--scene-pan)) center;
-  transform: none !important;
-  transition: opacity .72s var(--ease), background-position .08s linear;
-  will-change: opacity, background-position;
-}
-
-.scene-light { background-image: url("assets/ui/static_scene_light_desktop.webp"); opacity: 1; }
-.scene-dark  { background-image: url("assets/ui/static_scene_dark_desktop.webp"); opacity: 0; }
-html[data-theme="dark"] .scene-light { opacity: 0; }
-html[data-theme="dark"] .scene-dark  { opacity: 1; }
-
-/* Version-16 celestial entrance/exit behaviour, restored on desktop. */
-.scene-atmosphere {
-  position: fixed;
-  inset: var(--header-h) 0 0;
-  z-index: 1;
-  pointer-events: none;
-  overflow: hidden;
-  color: var(--muted);
-}
-.scene-celestial {
-  position: absolute;
-  width: clamp(92px, 9vw, 145px);
-  height: auto;
-  color: currentColor;
   transition:
-    opacity .72s var(--ease),
-    transform .95s cubic-bezier(.16,.84,.24,1),
-    color .5s var(--ease);
-  will-change: transform, opacity;
+    background-color .78s var(--ease),
+    color .52s var(--ease);
 }
-.scene-celestial-strokes > * {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.65;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
-}
-.scene-celestial-inner { opacity: .18; }
-.scene-sun {
-  left: 4.2vw;
-  top: 3.2vh;
-  opacity: .72;
-  transform: translate3d(0,0,0) scale(1);
-}
-.scene-moon {
-  right: 5.6vw;
-  top: 3.7vh;
-  opacity: 0;
-  transform: translate3d(0,-155px,0) scale(.9);
-}
-html[data-theme="dark"] .scene-sun {
-  opacity: 0;
-  transform: translate3d(0,-190px,0) scale(.88);
-}
-html[data-theme="dark"] .scene-moon {
-  opacity: .74;
-  transform: translate3d(0,0,0) scale(1);
-}
-
-.scene-car {
-  position: fixed;
-  left: 34.5vw;
-  bottom: var(--car-bottom);
-  width: clamp(72px, 9.2vh, 104px);
-  height: auto;
-  z-index: 1;
-  pointer-events: none;
-  transform: translate3d(var(--car-x), 0, 0);
-  transform-origin: 50% 100%;
-  opacity: .92;
-  will-change: transform;
-  transition: filter .72s var(--ease), opacity .72s var(--ease);
-}
-html[data-theme="dark"] .scene-car {
-  filter: invert(1) sepia(.08) saturate(.6) brightness(1.08);
-  opacity: .82;
-}
-
-/* Content/header keep their established stacking. */
-.viewport, .track { position: relative; z-index: 2; }
-.site-header { z-index: 100; }
-.panel, .hero-panel { background: transparent !important; border-right: 0 !important; }
-.project-panel::before { display: none !important; }
-.contact-panel { background: color-mix(in srgb, var(--contact-bg) 95%, transparent) !important; }
-
-@media (max-width: 900px) {
-  :root {
-    --scene-pan: 0vw !important;
-    --car-x: 0vw !important;
-    --car-bottom: 3.9vh;
-  }
-  .scene-light { background-image: url("assets/ui/static_scene_light_mobile.webp"); }
-  .scene-dark  { background-image: url("assets/ui/static_scene_dark_mobile.webp"); }
-  .scene-image {
-    background-position: center center;
-    background-size: cover;
-    transition: opacity .72s var(--ease);
-  }
-  /* Vertical mode intentionally has no celestial overlay. */
-  .scene-atmosphere { display: none !important; }
-  .scene-car {
-    left: 39vw;
-    width: clamp(62px, 18vw, 82px);
-    transform: none !important;
-    filter: none;
-    opacity: .9;
-  }
-  html[data-theme="dark"] .scene-car {
-    filter: invert(1) sepia(.08) saturate(.6) brightness(1.08);
-    opacity: .82;
-  }
-  .panel { border-bottom: 0 !important; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scene-image { background-position: center center !important; }
-  .scene-car { transform: none !important; }
-}
-
-/* v20 — straight road, unified themes, exact car grounding. */
-.site-header {
-  background: var(--paper) !important;
-  backdrop-filter: none !important;
-}
-
-.scene-background {
-  background: var(--paper) !important;
-}
-
-/* Preserve the artwork's aspect ratio. Height is fixed to the viewport; excess width
-   becomes the overscan used for the subtle horizontal drift. */
-.scene-image {
-  background-size: auto 100% !important;
-  background-position: calc(50% + var(--scene-pan)) center !important;
-  background-repeat: no-repeat !important;
-}
-
-/* Desktop road top is y=940 on a 1080px-high asset => 12.963vh from bottom. */
-.scene-car {
-  bottom: 12.963vh !important;
-  left: 34.5vw;
-  width: clamp(72px, 9.2vh, 104px);
-  opacity: .95 !important;
-  filter: none !important;
-  transition: filter .72s var(--ease), opacity .72s var(--ease) !important;
-}
-
-html[data-theme="dark"] .scene-car {
-  /* Same exact position in both modes; only recolor the line art. */
-  bottom: 12.963vh !important;
-  filter: invert(1) sepia(.05) saturate(.45) brightness(1.08) !important;
-  opacity: .88 !important;
-}
-
-/* Contact is no longer inverted. Every slide now follows the global theme. */
-.contact-panel {
-  background: transparent !important;
-  color: var(--ink) !important;
-}
-.contact-layout .eyebrow,
-.contact-meta span,
-.signature,
-.contact-panel .disabled-link {
-  color: var(--muted) !important;
-}
-.big-email,
-.contact-meta {
-  border-color: var(--line) !important;
-}
-.contact-panel .disabled-link {
-  border-color: var(--line) !important;
-}
-.contact-panel::after { border-color: var(--ring-line) !important; }
-
-@media (max-width: 900px) {
-  /* Mobile asset is 1080x2340. Road top is y=2100 => 10.256% from bottom. */
-  .scene-image {
-    background-size: auto 100% !important;
-    background-position: center center !important;
-  }
-  .scene-car,
-  html[data-theme="dark"] .scene-car {
-    left: 39vw;
-    bottom: 10.256svh !important;
-    width: clamp(62px, 18vw, 82px);
-    transform: none !important;
-  }
-  .scene-car { filter: none !important; opacity: .95 !important; }
-  html[data-theme="dark"] .scene-car {
-    filter: invert(1) sepia(.05) saturate(.45) brightness(1.08) !important;
-    opacity: .88 !important;
-  }
-}
-
-/* v21 — restore the exact Version-15 visual language.
-   The mountains/clouds/stars are taken from the original v15 artwork. Only the
-   embedded SUV/celestial body/uneven road were removed so the road can remain
-   straight and the car/celestial transition can stay independent. */
-:root {
-  --v21-road-bottom-desktop: 12.17vh;
-  --v21-road-bottom-mobile: 11.48svh;
-}
-
-/* Keep the background slightly oversized without changing its aspect ratio.
-   Bottom anchoring makes the straight road a stable reference line. */
-.scene-image {
-  background-size: auto 106% !important;
-  background-position: calc(50% + var(--scene-pan)) bottom !important;
-  background-repeat: no-repeat !important;
-}
-
-/* Exact same vertical grounding in light and dark modes. */
-.scene-car,
-html[data-theme="dark"] .scene-car {
-  bottom: var(--v21-road-bottom-desktop) !important;
-}
-
-/* Original palette: header and every slide follow the same global theme. */
-.site-header {
-  background: var(--paper) !important;
-  backdrop-filter: none !important;
-}
-.contact-panel {
-  background: transparent !important;
-  color: var(--ink) !important;
-}
-
-@media (max-width: 900px) {
-  .scene-image {
-    background-size: auto 100% !important;
-    background-position: center bottom !important;
-  }
-  .scene-car,
-  html[data-theme="dark"] .scene-car {
-    bottom: var(--v21-road-bottom-mobile) !important;
-    left: 39vw;
-    transform: none !important;
-  }
-}
-
-
-/* =========================
-   Version 22 final overrides
-   Requested changes:
-   - use updated mountain-road background in both modes
-   - off-white light mode with clouds and birds
-   - dark mode with striped #282828 sky, stars and twin meteors
-   - keep version-16 sun/moon transition, but use non-transparent shapes
-   - keep the red SUV, with no dark-mode inversion
-   - dedicated vertical/mobile background assets
-   ========================= */
-:root {
-  --v22-car-bottom-desktop: 12.35vh;
-  --v22-car-bottom-mobile: 17.3svh;
-}
-.scene-light { background-image: url("assets/ui/static_scene_light_desktop.webp") !important; opacity: 1; }
-.scene-dark  { background-image: url("assets/ui/static_scene_dark_desktop.webp") !important; opacity: 0; }
-html[data-theme="dark"] .scene-light { opacity: 0; }
-html[data-theme="dark"] .scene-dark  { opacity: 1; }
-.scene-image {
-  background-size: auto 106% !important;
-  background-position: calc(50% + var(--scene-pan)) bottom !important;
-  background-repeat: no-repeat !important;
-}
-.scene-background { background: var(--paper) !important; }
-.site-header { background: var(--paper) !important; backdrop-filter: none !important; }
-.contact-panel { background: transparent !important; color: var(--ink) !important; }
-.scene-car {
-  left: 34.8vw !important;
-  bottom: var(--v22-car-bottom-desktop) !important;
-  width: clamp(76px, 9.5vh, 112px) !important;
-  opacity: 1 !important;
-  filter: none !important;
-}
-html[data-theme="dark"] .scene-car {
-  bottom: var(--v22-car-bottom-desktop) !important;
-  opacity: 1 !important;
-  filter: none !important;
-}
-/* Filled, non-transparent celestial shapes while preserving the existing v16 motion. */
-.scene-celestial-strokes > * { stroke-width: 1.65 !important; }
-.scene-sun { left: 4.2vw !important; top: 3.2vh !important; opacity: .95 !important; color: #cdb98f !important; }
-.scene-moon { right: 5.6vw !important; top: 3.7vh !important; color: #e8dfcf !important; }
-html[data-theme="dark"] .scene-sun { opacity: 0 !important; }
-html[data-theme="dark"] .scene-moon { opacity: .95 !important; }
-.scene-sun .scene-celestial-strokes > circle:first-child { fill: #f4ead2 !important; stroke: #d5c29a !important; }
-.scene-sun .scene-celestial-inner { fill: none !important; stroke: #d5c29a !important; opacity: 1 !important; }
-.scene-moon .scene-celestial-strokes > circle:first-child { fill: #eee6d8 !important; stroke: #d7cdbc !important; }
-.scene-moon .scene-celestial-strokes > ellipse { fill: rgba(215,205,189,.32) !important; stroke: #d7cdbc !important; }
-@media (max-width: 900px) {
-  .scene-light { background-image: url("assets/ui/static_scene_light_mobile.webp") !important; }
-  .scene-dark  { background-image: url("assets/ui/static_scene_dark_mobile.webp") !important; }
-  .scene-image {
-    background-size: auto 100% !important;
-    background-position: center bottom !important;
-  }
-  .scene-car,
-  html[data-theme="dark"] .scene-car {
-    left: 39vw !important;
-    bottom: var(--v22-car-bottom-mobile) !important;
-    width: clamp(74px, 19vw, 94px) !important;
-    transform: none !important;
-    filter: none !important;
-    opacity: 1 !important;
-  }
-}
-
-
-/* Version 22.1 — use the approved backgrounds and align the red SUV on the flat road */
-:root {
-  --v22a-car-left-desktop: 31.9vw;
-  --v22a-car-left-mobile: 37vw;
-  --v22a-car-bottom-desktop: 12.95vh;
-  --v22a-car-bottom-mobile: 16.85svh;
-}
-.scene-light { background-image: url("assets/ui/static_scene_light_desktop.webp") !important; }
-.scene-dark  { background-image: url("assets/ui/static_scene_dark_desktop.webp") !important; }
-.scene-image { background-size: auto 106% !important; background-position: calc(50% + var(--scene-pan)) bottom !important; background-repeat: no-repeat !important; }
-.scene-car, html[data-theme="dark"] .scene-car {
-  left: var(--v22a-car-left-desktop) !important;
-  bottom: var(--v22a-car-bottom-desktop) !important;
-  width: clamp(76px, 9.5vh, 112px) !important;
-  opacity: 1 !important;
-  filter: none !important;
-}
-@media (max-width: 900px) {
-  .scene-light { background-image: url("assets/ui/static_scene_light_mobile.webp") !important; }
-  .scene-dark  { background-image: url("assets/ui/static_scene_dark_mobile.webp") !important; }
-  .scene-image { background-size: auto 100% !important; background-position: center bottom !important; }
-  .scene-car, html[data-theme="dark"] .scene-car {
-    left: var(--v22a-car-left-mobile) !important;
-    bottom: var(--v22a-car-bottom-mobile) !important;
-    width: clamp(74px, 19vw, 94px) !important;
-    transform: none !important;
-    opacity: 1 !important;
-    filter: none !important;
-  }
-}
-\n\n/* =========================\n   VERSION 23 — final background integration\n   ========================= */\n.scene-background { background: var(--paper) !important; }\n.scene-light {\n  background-image: url("assets/ui/v23_light_desktop.webp") !important;\n  opacity: 1;\n}\n.scene-dark {\n  background-image: url("assets/ui/v23_dark_desktop.webp") !important;\n  opacity: 0;\n}\nhtml[data-theme="dark"] .scene-light { opacity: 0; }\nhtml[data-theme="dark"] .scene-dark { opacity: 1; }\n.scene-image {\n  background-size: 106% auto !important;\n  background-position: calc(50% + var(--scene-pan)) bottom !important;\n  background-repeat: no-repeat !important;\n  image-rendering: auto;\n}\n/* Smaller matte-red SUV; tyres sit on the long flat road left of centre. */\n.scene-car, html[data-theme="dark"] .scene-car {\n  left: 31.6vw !important;\n  bottom: 19.72vh !important;\n  width: clamp(58px, 7.4vh, 86px) !important;\n  opacity: 1 !important;\n  filter: none !important;\n}\n/* Keep v16 sun/moon entrance-exit mechanics. Bodies are opaque. */\n.scene-sun { left: 4.2vw !important; top: 3.2vh !important; opacity: .96 !important; }\n.scene-moon { right: 5.6vw !important; top: 3.7vh !important; }\nhtml[data-theme="dark"] .scene-sun { opacity: 0 !important; }\nhtml[data-theme="dark"] .scene-moon { opacity: .96 !important; }\n.scene-sun .scene-celestial-strokes > circle:first-child {\n  fill: #f3e7ca !important; stroke: #d2bd91 !important;\n}\n.scene-sun .scene-celestial-inner { fill: none !important; stroke: #d2bd91 !important; opacity: 1 !important; }\n.scene-moon .scene-celestial-strokes > circle:first-child {\n  fill: #282828 !important; stroke: #e4dac7 !important;\n}\n.scene-moon .scene-celestial-strokes > ellipse {\n  fill: #282828 !important; stroke: #e4dac7 !important; opacity: 1 !important;\n}\n.site-header { background: var(--paper) !important; backdrop-filter: none !important; }\n.contact-panel { background: transparent !important; color: var(--ink) !important; }\n@media (max-width: 900px) {\n  .scene-light { background-image: url("assets/ui/v23_light_mobile.webp") !important; }\n  .scene-dark { background-image: url("assets/ui/v23_dark_mobile.webp") !important; }\n  .scene-image {\n    background-size: 100% auto !important;\n    background-position: center bottom !important;\n  }\n  .scene-atmosphere { display: none !important; }\n  .scene-car, html[data-theme="dark"] .scene-car {\n    left: 38.5vw !important;\n    bottom: 13.15svh !important;\n    width: clamp(54px, 14.5vw, 72px) !important;\n    transform: none !important;\n    opacity: 1 !important;\n    filter: none !important;\n  }\n}\n
-
-/* v23 FIXED — exact supplied art source, no stretching. */
-.scene-background{background:var(--paper)!important;}
-.scene-light{background-image:url("assets/ui/v23_light_desktop.webp")!important;opacity:1;}
-.scene-dark{background-image:url("assets/ui/v23_dark_desktop.webp")!important;opacity:0;}
-html[data-theme="dark"] .scene-light{opacity:0;}
-html[data-theme="dark"] .scene-dark{opacity:1;}
-.scene-image{background-size:cover!important;background-position:calc(50% + var(--scene-pan)) bottom!important;background-repeat:no-repeat!important;image-rendering:auto;}
-/* smaller red SUV, tyres aligned to the long flat road segment */
-.scene-car,html[data-theme="dark"] .scene-car{left:32.2vw!important;bottom:13.05vh!important;width:clamp(62px,7.8vh,92px)!important;opacity:1!important;filter:none!important;}
-/* Preserve v16 celestial entrance/exit transforms; make bodies opaque. */
-.scene-sun .scene-celestial-strokes>circle:first-child{fill:#f4e6c6!important;stroke:#d5bd8c!important;}
-.scene-moon .scene-celestial-strokes>circle:first-child{fill:#282828!important;stroke:#e2d8c6!important;}
-.scene-moon .scene-celestial-strokes>ellipse{fill:#282828!important;stroke:#e2d8c6!important;}
-.contact-panel{background:transparent!important;color:var(--ink)!important;}
-@media(max-width:900px){
- .scene-light{background-image:url("assets/ui/v23_light_mobile.webp")!important;}
- .scene-dark{background-image:url("assets/ui/v23_dark_mobile.webp")!important;}
- .scene-image{background-size:cover!important;background-position:center bottom!important;}
- .scene-atmosphere{display:none!important;}
- .scene-car,html[data-theme="dark"] .scene-car{left:35.5vw!important;bottom:14.6svh!important;width:clamp(62px,16vw,82px)!important;transform:none!important;filter:none!important;opacity:1!important;}
-}
-
-
-/* =========================================================
-   VERSION 24 — static outlined SUV + extended crisp scenery
-   ========================================================= */
-
-:root {
-  --v24-road-bottom-desktop: 13.28vh;
-  --v24-road-bottom-mobile: 9.23svh;
-}
-
-/* Use the new high-resolution images without stretching.
-   Desktop starts at the original image's left edge. Extra right scenery is
-   hidden off-screen and appears naturally as --scene-pan shifts left. */
-.scene-light {
-  background-image: url("assets/ui/v24_light_desktop.webp") !important;
-}
-.scene-dark {
-  background-image: url("assets/ui/v24_dark_desktop.webp") !important;
-}
-.scene-image {
-  background-size: auto 100% !important;
-  background-position: var(--scene-pan) bottom !important;
-  background-repeat: no-repeat !important;
-  image-rendering: auto !important;
-}
-
-/* Static outline-only car. No horizontal movement at all. */
-.scene-car,
-html[data-theme="dark"] .scene-car {
-  left: 31.8vw !important;
-  bottom: var(--v24-road-bottom-desktop) !important;
-  width: clamp(52px, 6.4vh, 72px) !important;
-  transform: none !important;
-  opacity: .92 !important;
-  filter: none !important;
-}
-html[data-theme="dark"] .scene-car {
-  /* Muted cream-gold outline so it remains visible but never competes with text. */
-  filter: invert(78%) sepia(24%) saturate(520%) hue-rotate(359deg) brightness(93%) !important;
-  opacity: .88 !important;
-}
-
-/* Sun body matches the off-white background. Only the outline/rays stay visible. */
-.scene-sun .scene-celestial-strokes > circle:first-child {
-  fill: #f3efe6 !important;
-  stroke: #c6ae76 !important;
-}
-.scene-sun .scene-celestial-inner {
-  fill: none !important;
-  stroke: #c6ae76 !important;
-  opacity: 1 !important;
-}
-
-/* Moon remains #282828 inside with restrained cream-gold outlines. */
-.scene-moon .scene-celestial-strokes > circle:first-child {
-  fill: #282828 !important;
-  stroke: #c9ba92 !important;
-}
-.scene-moon .scene-celestial-strokes > ellipse {
-  fill: #282828 !important;
-  stroke: #c9ba92 !important;
-  opacity: 1 !important;
-}
-
-/* Night stars sit BELOW the fixed header, so none are hidden behind it. */
-.night-sky-layer {
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: var(--header-h);
-  bottom: 0;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0;
-  overflow: hidden;
-  transition: opacity .72s var(--ease);
-}
-html[data-theme="dark"] .night-sky-layer {
-  opacity: 1;
-}
-
-.night-star {
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: #cdbf99;
-  box-shadow: 0 0 5px rgba(205,191,153,.22);
-}
-.night-star::before,
-.night-star::after {
-  content: "";
-  position: absolute;
-  background: #cdbf99;
-  opacity: .78;
-}
-.night-star::before {
-  width: 11px;
-  height: 1px;
-  left: -4px;
-  top: 1px;
-}
-.night-star::after {
-  width: 1px;
-  height: 11px;
-  left: 1px;
-  top: -4px;
-}
-.night-star.s1 { left: 9%;  top: 12%; transform:scale(.75); }
-.night-star.s2 { left: 27%; top: 27%; transform:scale(.55); }
-.night-star.s3 { left: 48%; top: 11%; transform:scale(.9); }
-.night-star.s4 { left: 64%; top: 31%; transform:scale(.55); }
-.night-star.s5 { left: 79%; top: 15%; transform:scale(.8); }
-.night-star.s6 { left: 91%; top: 34%; transform:scale(.55); }
-
-.shooting-star {
-  position: absolute;
-  width: 92px;
-  height: 1px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, transparent, rgba(207,193,155,.32), #d1c19b);
-  transform: rotate(-38deg);
-  transform-origin: right center;
-  opacity: 0;
-}
-.shooting-star::after {
-  content:"";
-  position:absolute;
-  right:-2px;
-  top:-2px;
-  width:5px;
-  height:5px;
-  border-radius:50%;
-  background:#d1c19b;
-  box-shadow:0 0 7px rgba(209,193,155,.4);
-}
-.shooting-star-a {
-  left: 19%;
-  top: 20%;
-  animation: v24MeteorA 9.5s ease-in-out infinite;
-}
-.shooting-star-b {
-  right: 14%;
-  top: 28%;
-  animation: v24MeteorB 12.5s ease-in-out 3.2s infinite;
-}
-@keyframes v24MeteorA {
-  0%, 68%, 100% { opacity:0; transform:translate3d(-25px,-18px,0) rotate(-38deg); }
-  72% { opacity:.9; }
-  79% { opacity:.55; transform:translate3d(58px,42px,0) rotate(-38deg); }
-  83% { opacity:0; transform:translate3d(82px,58px,0) rotate(-38deg); }
-}
-@keyframes v24MeteorB {
-  0%, 72%, 100% { opacity:0; transform:translate3d(-20px,-12px,0) rotate(-38deg); }
-  76% { opacity:.8; }
-  82% { opacity:.48; transform:translate3d(50px,36px,0) rotate(-38deg); }
-  86% { opacity:0; transform:translate3d(76px,54px,0) rotate(-38deg); }
-}
-
-/* Same theme color on every slide. */
-.contact-panel {
-  background: transparent !important;
-  color: var(--ink) !important;
-}
-
-/* Keep the background crisp rather than overlaying page-wide texture on top of it. */
-.noise { opacity: .035 !important; }
-html[data-theme="dark"] .noise { opacity: .018 !important; }
-
-@media (max-width: 900px) {
-  .scene-light {
-    background-image: url("assets/ui/v24_light_mobile.webp") !important;
-  }
-  .scene-dark {
-    background-image: url("assets/ui/v24_dark_mobile.webp") !important;
-  }
-  .scene-image {
-    background-size: cover !important;
-    background-position: center bottom !important;
-  }
-
-  /* Preserve the earlier mobile rule: no sun/moon or star layer in vertical mode. */
-  .scene-atmosphere,
-  .night-sky-layer {
-    display: none !important;
-  }
-
-  .scene-car,
-  html[data-theme="dark"] .scene-car {
-    left: 39.5vw !important;
-    bottom: var(--v24-road-bottom-mobile) !important;
-    width: clamp(48px, 13vw, 60px) !important;
-    transform: none !important;
-    opacity: .92 !important;
-  }
-  html[data-theme="dark"] .scene-car {
-    filter: invert(78%) sepia(24%) saturate(520%) hue-rotate(359deg) brightness(93%) !important;
-    opacity: .86 !important;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .shooting-star { animation: none !important; opacity: 0 !important; }
-}
-
-
-/* =========================================================
-   VERSION 25 — subtle scenery + fixed static car + ✨ stars
-   ========================================================= */
-
-:root {
-  /* v25 desktop flat road is y≈1250/1440 => 13.194% from bottom */
-  --v25-road-bottom-desktop: 13.194vh;
-  --v25-road-bottom-mobile: 9.23svh;
-}
-
-/* Updated softened backgrounds. */
-.scene-light {
-  background-image: url("assets/ui/v25_light_desktop.webp") !important;
-}
-.scene-dark {
-  background-image: url("assets/ui/v25_dark_desktop.webp") !important;
-}
-
-/* Keep extra right-side scenery and preserve aspect ratio. */
-.scene-image {
-  background-size: auto 100% !important;
-  background-position: var(--scene-pan) bottom !important;
-  background-repeat: no-repeat !important;
-  image-rendering: auto !important;
-}
-
-/* Car is completely static: no forward motion and no theme-position shift. */
-.scene-car,
-html[data-theme="dark"] .scene-car {
-  left: 32.15vw !important;
-  bottom: var(--v25-road-bottom-desktop) !important;
-  width: clamp(49px, 6vh, 68px) !important;
-  transform: none !important;
-  opacity: .78 !important;
-  filter: none !important;
-}
-
-/* Dark car uses the same restrained cream tone as the scenery. */
-html[data-theme="dark"] .scene-car {
-  filter: invert(75%) sepia(17%) saturate(480%) hue-rotate(357deg) brightness(91%) !important;
-  opacity: .66 !important;
-}
-
-/* Dark sky contains no clouds or birds; those are removed from the actual dark image. */
-
-/* ✨ emoji stars: static, subtle, and below the header. */
-.night-sky-layer {
-  top: var(--header-h) !important;
-  z-index: 1 !important;
-}
-
-.sparkle-star {
-  position: absolute;
-  font-size: clamp(10px, .95vw, 15px);
-  line-height: 1;
-  opacity: .38;
-  filter: saturate(.55) brightness(1.02);
-  user-select: none;
-}
-.sparkle-star.s1 { left: 9%;  top: 12%; transform: scale(.72); }
-.sparkle-star.s2 { left: 28%; top: 27%; transform: scale(.52); }
-.sparkle-star.s3 { left: 47%; top: 10%; transform: scale(.78); }
-.sparkle-star.s4 { left: 65%; top: 29%; transform: scale(.52); }
-.sparkle-star.s5 { left: 80%; top: 14%; transform: scale(.68); }
-.sparkle-star.s6 { left: 91%; top: 34%; transform: scale(.48); }
-
-/* Twin falling stars remain visible but completely static. */
-.shooting-star,
-.shooting-star-a,
-.shooting-star-b {
-  animation: none !important;
-  opacity: .38 !important;
-}
-.shooting-star-a {
-  left: 19% !important;
-  top: 20% !important;
-  transform: rotate(-38deg) !important;
-}
-.shooting-star-b {
-  right: 14% !important;
-  top: 28% !important;
-  transform: rotate(-38deg) !important;
-}
-
-/* Keep sun fill matching the light background. */
-.scene-sun .scene-celestial-strokes > circle:first-child {
-  fill: #f3efe6 !important;
-}
-
-/* Softer celestial outlines to match the toned-down scenery. */
-.scene-sun .scene-celestial-strokes > * {
-  stroke: #aaa08b !important;
-}
-.scene-moon .scene-celestial-strokes > circle:first-child,
-.scene-moon .scene-celestial-strokes > ellipse {
-  stroke: #bcae88 !important;
-}
-
-/* Mobile keeps its dedicated vertical background and static car. */
-@media (max-width: 900px) {
-  .scene-light {
-    background-image: url("assets/ui/v25_light_mobile.webp") !important;
-  }
-  .scene-dark {
-    background-image: url("assets/ui/v25_dark_mobile.webp") !important;
-  }
-
-  .scene-image {
-    background-size: cover !important;
-    background-position: center bottom !important;
-  }
-
-  .scene-car,
-  html[data-theme="dark"] .scene-car {
-    left: 39.2vw !important;
-    bottom: var(--v25-road-bottom-mobile) !important;
-    width: clamp(46px, 12.5vw, 58px) !important;
-    transform: none !important;
-    opacity: .76 !important;
-  }
-
-  html[data-theme="dark"] .scene-car {
-    opacity: .64 !important;
-  }
-
-  /* Keep vertical mode clean as previously decided. */
-  .scene-atmosphere,
-  .night-sky-layer {
-    display: none !important;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .shooting-star { animation: none !important; }
-}
-
-
-/* =========================================================
-   VERSION 26 FINAL
-   ========================================================= */
-.scene-light { background-image:url("assets/ui/v26_light_desktop.webp") !important; }
-.scene-dark  { background-image:url("assets/ui/v26_dark_desktop.webp") !important; }
-.scene-image {
-  background-size:auto 100% !important;
-  background-position:var(--scene-pan) bottom !important;
-  background-repeat:no-repeat !important;
-}
-
-/* The SUV is baked into both backgrounds now. */
-.scene-car { display:none !important; }
-
-/* Smaller sun, no spikes, subtle warm outline. Keep the v16 enter/exit transform. */
-.scene-sun { width:clamp(66px,6.4vw,102px) !important; left:4.9vw !important; top:4.4vh !important; }
-.scene-sun line { display:none !important; }
-.scene-sun .scene-celestial-strokes > circle:first-child {
-  fill:#f3efe6 !important;
-  stroke:#bfb29d !important;
-  stroke-width:1.35 !important;
-}
-.scene-sun .scene-celestial-inner {
-  fill:none !important;
-  stroke:#cdc2b0 !important;
-  opacity:.42 !important;
-  stroke-width:1.1 !important;
-}
-
-/* Requested static star glyphs. */
-.sparkle-star {
-  position:absolute;
-  color:#d4c4a0;
-  font-size:clamp(11px,.95vw,15px);
-  line-height:1;
-  opacity:.40;
-  user-select:none;
-  text-shadow:none;
-}
-.sparkle-star.s1{left:9%;top:12%;transform:scale(.76)}
-.sparkle-star.s2{left:28%;top:26%;transform:scale(.62)}
-.sparkle-star.s3{left:49%;top:11%;transform:scale(.82)}
-.sparkle-star.s4{left:65%;top:29%;transform:scale(.60)}
-.sparkle-star.s5{left:81%;top:15%;transform:scale(.74)}
-.sparkle-star.s6{left:91%;top:33%;transform:scale(.56)}
-
-/* Twin falling stars: static and without end dots. */
-.shooting-star,.shooting-star-a,.shooting-star-b{animation:none !important;opacity:.34 !important;}
-.shooting-star::after{content:none !important;display:none !important;}
-.shooting-star{background:linear-gradient(90deg,transparent,rgba(210,194,155,.92)) !important;box-shadow:none !important;}
-.shooting-star-a{left:19% !important;top:21% !important;transform:rotate(-38deg) !important;}
-.shooting-star-b{right:14% !important;top:29% !important;transform:rotate(-38deg) !important;}
-
-@media (max-width:900px){
-  .scene-light{background-image:url("assets/ui/v26_light_mobile.webp") !important;}
-  .scene-dark{background-image:url("assets/ui/v26_dark_mobile.webp") !important;}
-  .scene-image{background-size:cover !important;background-position:center bottom !important;}
-}
-
-
-/* =========================
-   VERSION 27 — sky cleanup + mountain fill
-   ========================= */
-.scene-light { background-image: url("assets/ui/v27_light_desktop.webp") !important; }
-.scene-dark  { background-image: url("assets/ui/v27_dark_desktop.webp") !important; }
-.scene-car, html[data-theme="dark"] .scene-car { display:none !important; }
-.scene-image {
-  background-size: auto 100% !important;
-  background-position: var(--scene-pan) bottom !important;
-  background-repeat: no-repeat !important;
-}
-/* Requested star glyphs */
-.sparkle-star {
-  position:absolute;
-  color:#d8c9a7;
-  opacity:.42;
-  line-height:1;
-  text-shadow:none;
-  user-select:none;
-}
-.sparkle-star.s1 { left: 8.5%; top: 12%; transform: scale(.78); }
-.sparkle-star.s2 { left: 27%; top: 24%; transform: scale(.64); }
-.sparkle-star.s3 { left: 50%; top: 10%; transform: scale(.82); }
-.sparkle-star.s4 { left: 64%; top: 28%; transform: scale(.63); }
-.sparkle-star.s5 { left: 83%; top: 14%; transform: scale(.76); }
-.sparkle-star.s6 { left: 92%; top: 32%; transform: scale(.58); }
-/* Flip falling stars so the faded trail sits at the top-left and the brighter head at lower-right. */
-.shooting-star,
-.shooting-star-a,
-.shooting-star-b {
-  animation:none !important;
-  opacity:.34 !important;
-  background: linear-gradient(90deg, rgba(216,201,167,0), rgba(216,201,167,.88)) !important;
-  box-shadow:none !important;
-}
-.shooting-star::after { content:none !important; display:none !important; }
-.shooting-star-a { left: 18.5% !important; top: 21% !important; transform: rotate(-44deg) !important; }
-.shooting-star-b { right: 14% !important; top: 28.5% !important; transform: rotate(-44deg) !important; }
-@media (max-width: 900px) {
-  .scene-light { background-image: url("assets/ui/v27_light_mobile.webp") !important; }
-  .scene-dark  { background-image: url("assets/ui/v27_dark_mobile.webp") !important; }
-  .scene-image {
-    background-size: cover !important;
-    background-position: center bottom !important;
-  }
-}
-
-
-/* =========================
-   VERSION 28 — clean sky / grounded mountain pass
-   ========================= */
-.scene-light{background-image:url("assets/ui/v28_light_desktop.webp")!important;}
-.scene-dark{background-image:url("assets/ui/v28_dark_desktop.webp")!important;}
-.scene-car,html[data-theme="dark"] .scene-car{display:none!important;}
-.scene-image{background-size:auto 100%!important;background-position:var(--scene-pan) bottom!important;background-repeat:no-repeat!important;}
-/* Correct falling-star direction: transparent/faded tail at upper-left, bright end at lower-right. */
-.shooting-star,.shooting-star-a,.shooting-star-b{
-  animation:none!important;
-  opacity:.34!important;
-  background:linear-gradient(90deg,rgba(216,201,167,0),rgba(216,201,167,.88))!important;
-  box-shadow:none!important;
-}
-.shooting-star::after{content:none!important;display:none!important;}
-.shooting-star-a{left:18.5%!important;top:18%!important;transform:rotate(44deg)!important;}
-.shooting-star-b{right:14%!important;top:24%!important;transform:rotate(44deg)!important;}
-@media(max-width:900px){
-  .scene-light{background-image:url("assets/ui/v28_light_mobile.webp")!important;}
-  .scene-dark{background-image:url("assets/ui/v28_dark_mobile.webp")!important;}
-  .scene-image{background-size:cover!important;background-position:center bottom!important;}
-}
-
-
-/* =========================
-   VERSION 29 — user-approved mountain backgrounds
-   - uses current-turn approved light/dark desktop and mobile artwork
-   - keeps version-16 sun/moon entrance-exit behavior
-   - uses version-28 sun/moon styling language
-   - hides old overlay stars because stars/shooting stars are baked into the dark backgrounds
-   ========================= */
-.scene-background { background: var(--paper) !important; }
-.scene-light { background-image: url("assets/ui/v29_light_desktop.png") !important; opacity: 1 !important; }
-.scene-dark  { background-image: url("assets/ui/v29_dark_desktop.png") !important; opacity: 0 !important; }
-html[data-theme="dark"] .scene-light { opacity: 0 !important; }
-html[data-theme="dark"] .scene-dark  { opacity: 1 !important; }
-
-/* Use cover so the wide/vertical art fills the browser cleanly without blur or empty edges. */
-.scene-image {
-  background-size: cover !important;
-  background-position: calc(50% + var(--scene-pan)) bottom !important;
-  background-repeat: no-repeat !important;
-  image-rendering: auto !important;
-}
-
-/* The current approved artwork already contains the car. */
-.scene-car,
-html[data-theme="dark"] .scene-car {
-  display: none !important;
-}
-
-/* Background artwork already contains night stars and shooting stars. */
-.night-sky-layer {
-  display: none !important;
-}
-
-/* Keep the version-16 sun/moon transition, but style them like the refined version-28 look. */
-.scene-sun {
-  width: clamp(64px, 6.2vw, 96px) !important;
-  left: 4.4vw !important;
-  top: 4vh !important;
-  opacity: .94 !important;
-}
-.scene-moon {
-  width: clamp(72px, 6.8vw, 102px) !important;
-  right: 5.4vw !important;
-  top: 4.1vh !important;
-}
-.scene-sun line { display: none !important; }
-.scene-sun .scene-celestial-strokes > circle:first-child {
-  fill: #f3efe6 !important;
-  stroke: #cabaa1 !important;
-  stroke-width: 1.35 !important;
-}
-.scene-sun .scene-celestial-inner {
-  fill: none !important;
-  stroke: #d9ccb8 !important;
-  opacity: .55 !important;
-  stroke-width: 1.1 !important;
-}
-.scene-sun .scene-celestial-strokes > * {
-  stroke: #cabaa1 !important;
-}
-.scene-moon .scene-celestial-strokes > circle:first-child {
-  fill: #282828 !important;
-  stroke: #d8c9ab !important;
-  stroke-width: 1.45 !important;
-}
-.scene-moon .scene-celestial-strokes > ellipse {
-  fill: #282828 !important;
-  stroke: #d8c9ab !important;
-  opacity: 1 !important;
-  stroke-width: 1.2 !important;
-}
-.site-header {
-  background: var(--paper) !important;
-  backdrop-filter: none !important;
-}
-.contact-panel {
-  background: transparent !important;
-  color: var(--ink) !important;
-}
-
-@media (max-width: 900px) {
-  .scene-light { background-image: url("assets/ui/v29_light_mobile.png") !important; }
-  .scene-dark  { background-image: url("assets/ui/v29_dark_mobile.png") !important; }
-  .scene-image {
-    background-size: cover !important;
-    background-position: center bottom !important;
-  }
-  .scene-atmosphere,
-  .night-sky-layer {
-    display: none !important;
-  }
-}
-
-
-/* VERSION 30 — corrected v29 backgrounds from approved references */
-.scene-light{background-image:url("assets/ui/v29_light_desktop.png") !important;}
-.scene-dark{background-image:url("assets/ui/v29_dark_desktop.png") !important;}
-.scene-image{background-size:cover !important;background-position:calc(50% + var(--scene-pan)) bottom !important;background-repeat:no-repeat !important;image-rendering:auto !important;}
-.scene-car, html[data-theme="dark"] .scene-car{display:none !important;}
-.scene-background{background:var(--paper) !important;}
-@media (max-width:900px){.scene-light{background-image:url("assets/ui/v29_light_mobile.png") !important;}.scene-dark{background-image:url("assets/ui/v29_dark_mobile.png") !important;}.scene-image{background-size:cover !important;background-position:center bottom !important;}}
-
-
-/* VERSION 32 — final color and scale corrections */
-.scene-background{background:#f5f1ea !important;}
-.site-header{background:#f5f1ea !important;}
-.scene-sun .scene-celestial-strokes > circle:first-child{fill:#f5f1ea !important;}
-.scene-sun .scene-celestial-inner{stroke:#d6c5a3 !important;}
-@media (max-width:900px){.scene-background{background:#f5f1ea !important;}}
-
-
-/* VERSION 33 — requested background corrections */
-:root{--paper:#f3efe6 !important; --header-glass:rgba(243,239,230,.97) !important;}
-.scene-background,.site-header{background:var(--paper) !important;}
-.scene-light{background-image:url("assets/ui/v29_light_desktop.png") !important;}
-.scene-dark{background-image:url("assets/ui/v29_dark_desktop.png") !important;}
-.scene-image{background-size:cover !important; background-position:calc(50% + var(--scene-pan)) bottom !important;}
-.scene-sun .scene-celestial-strokes > circle:first-child{fill:var(--paper) !important; stroke:#cabaa1 !important;}
-.scene-sun .scene-celestial-inner{stroke:#d9ccb8 !important;}
-@media (max-width:900px){.scene-light{background-image:url("assets/ui/v29_light_mobile.png") !important;} .scene-dark{background-image:url("assets/ui/v29_dark_mobile.png") !important;} .scene-image{background-size:cover !important; background-position:center bottom !important;}}
 
+button,
+a { font: inherit; }
 
-/* =========================================================
-   VERSION 35 — restore the original portfolio background
-   One fixed background for the entire site. No scenic artwork,
-   no sun/moon, no celestial animation, and no background panning.
-   ========================================================= */
+a,
+button { color: inherit; }
 
-/* Old scene system is removed from the HTML, but keep these hidden as a
-   defensive fallback in case any cached markup survives. */
-.scene-background,
-.scene-atmosphere,
-.night-sky-layer,
-.scene-car {
-  display: none !important;
+::selection {
+  background: var(--ink);
+  color: var(--paper);
 }
 
-/* Original portfolio look: subtle 64px grid over the off-white paper.
-   This layer is viewport-fixed, so it does not move while scrolling sideways. */
+/* Fixed portfolio background: one SVG for grid + geometry. */
 .original-static-background {
   position: fixed;
   inset: 0;
   z-index: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(rgba(40,40,40,.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(40,40,40,.035) 1px, transparent 1px),
-    #f3efe6;
-  background-size: 64px 64px, 64px 64px, auto;
-  background-position: 0 0, 0 0, 0 0;
-}
-
-html[data-theme="dark"] .original-static-background {
-  background:
-    linear-gradient(rgba(243,239,230,.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(243,239,230,.045) 1px, transparent 1px),
-    #282828;
-  background-size: 64px 64px, 64px 64px, auto;
-  background-position: 0 0, 0 0, 0 0;
-}
-
-/* Keep the header on the exact same paper/ink theme as the fixed background. */
-.site-header {
-  background: var(--paper) !important;
-  backdrop-filter: none !important;
-}
-
-/* All panels are transparent so the single fixed background continues
-   seamlessly from the first slide to the last. */
-.panel,
-.hero-panel,
-.contact-panel {
-  background: transparent !important;
-  border-right: 0 !important;
-  border-bottom: 0 !important;
-  color: var(--ink) !important;
-}
-.panel::after,
-.hero-pattern,
-.project-panel::before {
-  display: none !important;
-}
-
-/* Keep content above the fixed background. */
-.viewport,
-.track {
-  position: relative;
-  z-index: 2;
-}
-.site-header { z-index: 100 !important; }
-.progress-wrap { z-index: 120 !important; }
-
-/* Contact slide now uses the same theme/background as every other slide. */
-.contact-panel .eyebrow,
-.contact-panel .contact-meta span,
-.contact-panel .disabled-link,
-.signature {
-  color: var(--muted) !important;
-}
-.contact-panel .big-email,
-.contact-panel .contact-meta {
-  border-color: var(--line) !important;
-}
-
-@media (max-width: 900px) {
-  .original-static-background {
-    background-size: 48px 48px, 48px 48px, auto;
-  }
-  html[data-theme="dark"] .original-static-background {
-    background-size: 48px 48px, 48px 48px, auto;
-  }
-  .panel {
-    border-bottom: 0 !important;
-  }
-}
-
-
-/* =========================================================
-   VERSION 36 FIXED — one static original-style geometry background
-   ========================================================= */
-
-/* There is now exactly one UI background asset. Old scenic layers stay disabled. */
-:root,
-html[data-theme="dark"] {
-  --panel-bg-art: none !important;
-  --contact-bg-art: none !important;
-}
-
-.scene-background,
-.scene-atmosphere,
-.night-sky-layer,
-.scene-car,
-.hero-pattern {
-  display: none !important;
-}
-
-/* ONE static vector image, fixed from first slide through the final slide.
-   The image contains the grid + circle/+ geometry; square geometry is omitted. */
-.original-static-background {
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: 0 !important;
-  pointer-events: none !important;
-  background-color: #f3efe6 !important;
-  background-image: url("assets/ui/portfolio-static-geometry.svg") !important;
-  background-repeat: no-repeat !important;
-  background-position: center center !important;
-  background-size: cover !important;
-  filter: none !important;
-}
-
-html[data-theme="dark"] .original-static-background {
-  background-color: #282828 !important;
-  /* Invert the black transparent geometry to off-white while retaining transparency. */
-  filter: invert(1) !important;
-}
-
-/* Header follows the same theme but stays opaque/static. */
-.site-header {
-  background: var(--paper) !important;
-  backdrop-filter: none !important;
-}
-
-/* Remove old per-panel geometry: the fixed background image now owns all geometry. */
-.panel::after,
-.project-panel::before {
-  display: none !important;
-}
-
-/* Remove the old PORTFOLIO label without changing hero spacing. */
-.hero-index {
-  display: none !important;
-}
-
-/* Restore the original scroll instruction position and its wheel/arrow animation. */
-.scroll-cue {
-  position: absolute !important;
-  left: var(--pad) !important;
-  bottom: 3.8vh !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 10px !important;
-  z-index: 5 !important;
-}
-
-/* Explicitly restore every project gallery cover card.
-   This does not change its original dimensions/layout; it only prevents
-   later experimental CSS from hiding or flattening it. */
-.project-panel .gallery-trigger {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  position: absolute;
-  right: 8vw;
-  top: 50%;
-  transform: translateY(-45%);
-  width: clamp(260px, 28vw, 470px);
-  aspect-ratio: 1 / 1;
-  overflow: visible;
-  z-index: 6 !important;
-}
-
-.project-panel .gallery-trigger > img {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-}
-
-.project-panel .stack-border,
-.project-panel .gallery-plus,
-.project-panel .gallery-caption {
-  display: flex;
-  visibility: visible !important;
-}
-
-.project-panel .stack-border {
-  display: block !important;
-}
-
-@media (max-width: 900px) {
-  .original-static-background {
-    background-size: cover !important;
-    background-position: center center !important;
-  }
-
-  .project-panel .gallery-trigger {
-    position: relative !important;
-    right: auto !important;
-    top: auto !important;
-    transform: translate3d(0, 0, 0) !important;
-    opacity: 1 !important;
-    width: min(88vw, 440px) !important;
-    align-self: flex-end;
-    margin-top: 48px;
-    margin-right: 8px;
-  }
-
-  .scroll-cue {
-    bottom: 3.8vh !important;
-  }
-}
-
-
-/* =========================================================
-   VERSION 37 — smooth light/dark transition fix
-   ========================================================= */
-
-/* Exact theme colors. */
-:root {
-  --paper: #f3efe6 !important;
-}
-
-html[data-theme="dark"] {
-  --paper: #282828 !important;
-}
-
-/* The solid theme color lives on the background container itself.
-   The geometry image is separated into ::before so its filter does
-   NOT alter the #282828 background color. */
-.original-static-background {
-  background: var(--paper) !important;
-  transition: background-color .78s cubic-bezier(.2,.8,.2,1) !important;
   overflow: hidden;
+  pointer-events: none;
+  background: var(--paper);
+  transition: background-color .78s var(--ease);
 }
 
 .original-static-background::before {
@@ -1724,163 +96,1220 @@ html[data-theme="dark"] {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image: url("assets/ui/portfolio-static-geometry.svg");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
+  background: url("assets/ui/portfolio-static-geometry.svg") center / cover no-repeat;
   filter: none;
-  opacity: 1;
-  transition:
-    filter .78s cubic-bezier(.2,.8,.2,1),
-    opacity .78s cubic-bezier(.2,.8,.2,1);
+  transition: filter .78s var(--ease);
 }
 
-/* Only the transparent geometry artwork is inverted in dark mode.
-   The actual page background remains exactly #282828. */
 html[data-theme="dark"] .original-static-background {
-  background: #282828 !important;
-  filter: none !important;
+  background: #282828;
 }
 
 html[data-theme="dark"] .original-static-background::before {
   filter: invert(1);
 }
 
-/* Smooth the visible UI surfaces together with the background. */
-html,
-body,
-.site-header,
-.panel,
-.hero-panel,
-.contact-panel {
-  transition:
-    background-color .78s cubic-bezier(.2,.8,.2,1),
-    color .52s cubic-bezier(.2,.8,.2,1),
-    border-color .52s cubic-bezier(.2,.8,.2,1) !important;
+.noise {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  pointer-events: none;
+  opacity: .075;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.28'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
-body,
+html[data-theme="dark"] .noise {
+  mix-blend-mode: screen;
+  opacity: .035;
+}
+
+/* Header */
 .site-header {
-  background-color: var(--paper) !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-h);
+  z-index: 100;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 var(--pad);
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+  transition:
+    background-color .78s var(--ease),
+    color .52s var(--ease),
+    border-color .52s var(--ease);
 }
 
-html[data-theme="dark"] body,
-html[data-theme="dark"] .site-header {
-  background-color: #282828 !important;
+.brand {
+  justify-self: start;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
 }
 
-/* Remove the old v36 background-image declaration from the base layer;
-   the same single SVG is now rendered only by ::before. */
-.original-static-background {
-  background-image: none !important;
+.brand-signature {
+  font-family: "Cascadia Code", "Cascadia Mono", "IBM Plex Mono", monospace;
+  font-size: .78rem;
+  font-weight: 500;
+  letter-spacing: -.035em;
+  color: var(--muted);
+  transition: color .25s var(--ease);
 }
 
-@media (max-width: 900px) {
-  .original-static-background::before {
-    background-size: cover;
-    background-position: center center;
-  }
+.brand:hover .brand-signature,
+.brand:focus-visible .brand-signature { color: var(--ink); }
+
+.desktop-nav {
+  display: flex;
+  gap: 28px;
 }
 
+.desktop-nav button {
+  position: relative;
+  padding: 8px 0;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: .88rem;
+  cursor: pointer;
+}
 
-/* =========================================================
-   VERSION 38 — gallery plus button + sharper Stint22 cover
-   ========================================================= */
+.desktop-nav button::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 4px;
+  width: 0;
+  height: 1px;
+  background: var(--ink);
+  transition: width .25s var(--ease);
+}
+
+.desktop-nav button:hover { color: var(--ink); }
+.desktop-nav button:hover::after { width: 100%; }
+
+.header-tools {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.counter {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .72rem;
+  color: var(--muted);
+}
+
+.counter-line {
+  width: 28px;
+  height: 1px;
+  background: var(--line);
+}
+
+.theme-toggle {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition:
+    color .25s var(--ease),
+    border-color .25s var(--ease),
+    transform .25s var(--ease),
+    background-color .25s var(--ease);
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  color: var(--ink);
+  border-color: var(--ink);
+  transform: rotate(5deg);
+  outline: none;
+}
+
+.theme-icon {
+  width: 17px;
+  height: 17px;
+  grid-area: 1 / 1;
+  transition: opacity .25s var(--ease), transform .35s var(--ease);
+}
+
+.theme-icon-sun {
+  opacity: 0;
+  transform: rotate(-35deg) scale(.72);
+}
+
+.theme-icon-moon {
+  opacity: 1;
+  transform: rotate(0) scale(1);
+}
+
+html[data-theme="dark"] .theme-icon-sun {
+  opacity: 1;
+  transform: rotate(0) scale(1);
+}
+
+html[data-theme="dark"] .theme-icon-moon {
+  opacity: 0;
+  transform: rotate(35deg) scale(.72);
+}
+
+/* Horizontal desktop layout */
+.viewport {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  scrollbar-width: none;
+  overscroll-behavior-x: none;
+  overscroll-behavior-y: auto;
+}
+
+.viewport::-webkit-scrollbar { display: none; }
+
+.track {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  width: max-content;
+  height: 100%;
+  will-change: transform;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+html.native-horizontal,
+html.native-horizontal body {
+  height: 100%;
+  overflow: hidden;
+}
+
+html.native-horizontal .viewport {
+  position: fixed;
+  inset: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+}
+
+html.native-horizontal .panel { scroll-snap-align: start; }
+
+/* Panels */
+.panel {
+  position: relative;
+  flex: 0 0 100vw;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  padding: calc(var(--header-h) + 5vh) var(--pad) 6vh;
+  background: transparent;
+  color: var(--ink);
+  backface-visibility: hidden;
+  transition: color .52s var(--ease);
+}
+
+.reveal-group > * {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .7s var(--ease), transform .7s var(--ease);
+}
+
+.panel.active .reveal-group > * {
+  opacity: 1;
+  transform: none;
+}
+
+.panel.active .reveal-group > *:nth-child(2) { transition-delay: .06s; }
+.panel.active .reveal-group > *:nth-child(3) { transition-delay: .12s; }
+.panel.active .reveal-group > *:nth-child(4) { transition-delay: .18s; }
+.panel.active .reveal-group > *:nth-child(5) { transition-delay: .24s; }
+
+.eyebrow,
+.project-kicker,
+.mono,
+.section-label {
+  font-family: "IBM Plex Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: .69rem;
+}
+
+.eyebrow,
+.project-kicker,
+.section-label { color: var(--muted); }
+
+/* Home */
+.hero-panel {
+  display: flex;
+  align-items: center;
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 3;
+  width: min(900px, 72vw);
+}
+
+.hero-copy h1 {
+  margin: 12px 0 20px;
+  font-family: "Syne", "Bricolage Grotesque", Arial, sans-serif;
+  font-size: clamp(5.1rem, 10.2vw, 9.7rem);
+  line-height: .79;
+  letter-spacing: -.075em;
+  font-weight: 700;
+}
+
+.typing-name { min-height: 1.58em; }
+
+.typed-line {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  min-height: .79em;
+}
+
+.typed-line.typed-accent { font-weight: 500; }
+
+.typed-line.typing::after {
+  content: "";
+  display: inline-block;
+  width: .055em;
+  height: .76em;
+  margin-left: .055em;
+  background: var(--ink);
+  vertical-align: -.015em;
+  animation: typeCaret .72s steps(1,end) infinite;
+}
+
+@keyframes typeCaret {
+  50% { opacity: 0; }
+}
+
+.hero-intro {
+  width: min(600px, 62vw);
+  font-size: clamp(1.04rem, 1.45vw, 1.35rem);
+  line-height: 1.5;
+  color: var(--hero-copy);
+}
+
+.hero-actions {
+  display: flex;
+  gap: 28px;
+  margin-top: 30px;
+}
+
+.text-link {
+  padding: 4px 0;
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  background: none;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.text-link span {
+  display: inline-block;
+  transition: transform .2s var(--ease);
+}
+
+.text-link:hover span { transform: translate(3px,-3px); }
+
+.text-link.muted {
+  color: var(--muted);
+  border-color: var(--line);
+}
+
+.scroll-cue {
+  position: absolute;
+  left: var(--pad);
+  bottom: 3.8vh;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .64rem;
+  color: var(--muted);
+}
+
+.wheel {
+  position: relative;
+  width: 17px;
+  height: 25px;
+  border: 1px solid var(--muted);
+  border-radius: 12px;
+}
+
+.wheel::after {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 5px;
+  width: 2px;
+  height: 5px;
+  border-radius: 1px;
+  background: var(--ink);
+  animation: wheel 1.7s ease infinite;
+}
+
+@keyframes wheel {
+  0% { opacity: 0; transform: translateY(0); }
+  30% { opacity: 1; }
+  80% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 0; }
+}
+
+.arrow {
+  font-size: 1rem;
+  animation: nudge 1.5s ease-in-out infinite;
+}
+
+@keyframes nudge {
+  50% { transform: translateX(5px); }
+}
+
+/* About */
+.about-layout {
+  height: 100%;
+  display: grid;
+  grid-template-columns: .56fr 1.35fr 1fr;
+  gap: clamp(24px,4vw,72px);
+  align-items: center;
+}
+
+.section-label {
+  align-self: start;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding-top: 11vh;
+}
+
+.mini-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+.about-main h2,
+.hack-heading h2,
+.contact-layout h2 {
+  margin: 0 0 28px;
+  font-size: clamp(3.2rem,5.7vw,6.2rem);
+  line-height: .94;
+  letter-spacing: -.055em;
+  font-weight: 500;
+}
+
+.about-main h2 em,
+.hack-heading h2 em { font-weight: 400; }
+
+.about-main .lead {
+  font-size: clamp(1.15rem,1.5vw,1.45rem);
+  line-height: 1.48;
+}
+
+.about-main > p:last-child {
+  max-width: 650px;
+  color: var(--muted);
+  line-height: 1.58;
+}
+
+.skill-stack {
+  border-top: 1px solid var(--ink);
+}
+
+.skill-row {
+  display: grid;
+  grid-template-columns: 32px 120px 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.skill-row span {
+  padding-top: 3px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .64rem;
+  color: var(--muted);
+}
+
+.skill-row strong { font-size: .9rem; }
+
+.skill-row p {
+  margin: 0;
+  color: var(--muted);
+  font-size: .86rem;
+  line-height: 1.45;
+}
+
+/* Projects */
+.accent-coral { --accent: var(--coral); }
+.accent-sage { --accent: var(--sage); }
+.accent-blue { --accent: var(--blue); }
+.accent-gold { --accent: var(--gold); }
+.accent-violet { --accent: var(--violet); }
+
+.project-copy {
+  position: absolute;
+  left: var(--pad);
+  top: 50%;
+  z-index: 3;
+  width: min(48vw, 740px);
+  transform: translateY(-43%);
+}
+
+.project-copy h2 {
+  margin: 12px 0 24px;
+  font-size: clamp(4.5rem,7.8vw,8.8rem);
+  line-height: .82;
+  letter-spacing: -.07em;
+  font-weight: 500;
+}
+
+.project-copy h2 span { font-weight: 400; }
+
+.project-copy h2.single-line-title {
+  white-space: nowrap;
+  font-size: clamp(4rem,7.1vw,8rem);
+}
+
+.project-summary {
+  max-width: 670px;
+  margin: 0 0 22px;
+  font-size: clamp(1.05rem,1.45vw,1.35rem);
+  line-height: 1.52;
+}
+
+.project-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.project-meta span,
+.status-pill {
+  padding: 7px 9px;
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .62rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.project-points {
+  max-width: 680px;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+  list-style: none;
+}
+
+.project-points li {
+  position: relative;
+  padding: 9px 0 9px 18px;
+  border-bottom: 1px solid var(--line);
+  color: var(--body-copy);
+  font-size: .91rem;
+}
+
+.project-points li::before {
+  content: "↳";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+.project-links {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 19px;
+}
+
+/* Project cover cards */
+.gallery-trigger {
+  position: absolute;
+  right: 8vw;
+  top: 50%;
+  z-index: 6;
+  width: clamp(260px,28vw,470px);
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  overflow: visible;
+  border: 1px solid var(--ink);
+  background: var(--paper-2);
+  box-shadow: 0 18px 42px var(--shadow-soft);
+  cursor: pointer;
+  transform: translateY(-45%);
+}
+
+.gallery-trigger > img {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(.90) contrast(1.02);
+  transition: filter .35s var(--ease), transform .35s var(--ease);
+}
+
+.gallery-trigger:hover > img {
+  filter: saturate(1);
+  transform: translate(-3px,3px);
+}
+
+.stack-border {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  border: 1px solid var(--ink);
+  opacity: .4;
+  transition: transform .45s var(--ease), opacity .45s var(--ease);
+}
+
+.gallery-trigger:hover .border-a {
+  transform: translate(11px,-11px) rotate(1deg);
+  opacity: .65;
+}
+
+.gallery-trigger:hover .border-b {
+  transform: translate(21px,-21px) rotate(-1.2deg);
+  opacity: .35;
+}
+
 .gallery-plus {
-  right: 8px !important;
-  top: 8px !important;
-  width: 34px !important;
-  height: 34px !important;
-  min-width: 34px !important;
-  min-height: 34px !important;
-  padding: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  text-align: center !important;
-  line-height: 1 !important;
-  font-size: 1.1rem !important;
-  font-weight: 500 !important;
-  background: var(--paper) !important;
-  color: var(--ink) !important;
-  border: 1px solid var(--ink) !important;
-  border-radius: 0 !important;
-  box-sizing: border-box !important;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  z-index: 8;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  border: 1px solid var(--ink);
+  background: var(--paper);
+  color: transparent;
+  box-sizing: border-box;
+  font-size: 0;
+  line-height: 1;
+  text-indent: 0;
+  transition:
+    transform .3s var(--ease),
+    background-color .52s var(--ease),
+    border-color .52s var(--ease);
+}
+
+.gallery-plus::before {
+  content: "+";
+  display: block;
+  color: var(--ink);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 1.1rem;
+  font-weight: 500;
+  line-height: 1;
+  transform: translateY(-.5px);
+  transition: color .52s var(--ease);
 }
 
 .gallery-trigger:hover .gallery-plus {
   transform: rotate(90deg);
 }
 
-/* theme-matched gallery caption and plus block remain clean */
 .gallery-caption {
-  background: var(--paper) !important;
-  color: var(--ink) !important;
-}
-
-/* Make the Stint22 cover fill the gallery more confidently */
-button[data-gallery="stint"] img {
-  object-fit: cover !important;
-  object-position: center center !important;
-  transform: scale(1.01) !important;
-  filter: none !important;
-}
-
-
-/* =========================================================
-   VERSION 39 — final gallery plus alignment + Stint22 cover
-   ========================================================= */
-.gallery-plus {
-  position: absolute !important;
-  right: 8px !important;
-  top: 8px !important;
-  z-index: 8 !important;
-  width: 34px !important;
-  height: 34px !important;
-  min-width: 34px !important;
-  min-height: 34px !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  box-sizing: border-box !important;
-  border: 1px solid var(--ink) !important;
-  background: var(--paper) !important;
-  color: transparent !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  line-height: 1 !important;
-  font-size: 0 !important;
-  text-indent: 0 !important;
-}
-.gallery-plus::before {
-  content: '+';
-  display: block;
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 1.1rem;
-  font-weight: 500;
-  line-height: 1;
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  z-index: 5;
+  padding: 7px 9px;
+  border: 1px solid var(--line);
+  background: var(--paper);
   color: var(--ink);
-  transform: translateY(-.5px);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .61rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  transition:
+    background-color .52s var(--ease),
+    color .52s var(--ease),
+    border-color .52s var(--ease);
 }
-.gallery-trigger:hover .gallery-plus { transform: rotate(90deg) !important; }
 
-/* Ensure theme-matched small square in both modes */
-body.theme-dark .gallery-plus {
-  background: var(--paper) !important;
-  border-color: var(--ink) !important;
+.gallery-caption b {
+  margin-left: 8px;
+  color: var(--accent);
 }
-body.theme-dark .gallery-plus::before { color: var(--ink) !important; }
 
-/* Sharper and fuller Stint22 gallery cover */
 button[data-gallery="stint"] {
   overflow: hidden;
 }
+
 button[data-gallery="stint"] img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  object-position: center center !important;
-  filter: none !important;
-  transform: none !important;
-  background: #f5f4f0 !important;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: none;
+  transform: none;
+  background: #f5f4f0;
+}
+
+/* Hackathons */
+.hack-layout {
+  height: 100%;
+  display: grid;
+  grid-template-columns: .46fr 1.03fr 1fr 1fr;
+  gap: clamp(20px,3vw,52px);
+  align-items: center;
+}
+
+.hack-heading p {
+  max-width: 480px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.hack-card {
+  align-self: center;
+  min-height: 390px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid var(--ink);
+  background: var(--surface-card);
+  transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+}
+
+.hack-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 10px 10px 0 var(--shadow-soft);
+}
+
+.hack-card h3 {
+  margin: 12px 0;
+  font-size: clamp(1.7rem,2.3vw,2.7rem);
+  line-height: 1.05;
+  letter-spacing: -.04em;
+}
+
+.hack-card > p:not(.mono) {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.hack-details {
+  display: grid;
+  gap: 13px;
+  margin-top: 16px;
+}
+
+.hack-contrib {
+  padding-top: 13px;
+  border-top: 1px solid var(--line);
+}
+
+.hack-contrib span {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .62rem;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hack-contrib p {
+  margin: 8px 0 0;
+  line-height: 1.5;
+}
+
+.card-one { transform: rotate(-1deg); }
+.card-two { transform: rotate(1deg); }
+
+.card-one:hover,
+.card-two:hover {
+  transform: translateY(-8px) rotate(0);
+}
+
+/* Contact */
+.contact-layout {
+  height: 100%;
+  width: min(1100px,82vw);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.contact-layout h2 {
+  max-width: 1100px;
+  margin: 12px 0 32px;
+  font-size: clamp(4.6rem,8vw,9rem);
+  line-height: .88;
+}
+
+.big-email {
+  width: max-content;
+  max-width: 100%;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--line);
+  font-size: clamp(1.05rem,2vw,2rem);
+  text-decoration: none;
+}
+
+.big-email span {
+  display: inline-block;
+  transition: transform .25s var(--ease);
+}
+
+.big-email:hover span { transform: translate(5px,-5px); }
+
+.contact-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 38px;
+  margin-top: 9vh;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.contact-meta span {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .61rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+}
+
+.contact-meta strong,
+.contact-meta p {
+  display: block;
+  margin: 8px 0 0;
+  font-size: .9rem;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.signature {
+  position: absolute;
+  right: var(--pad);
+  bottom: 3vh;
+  font-family: "Cascadia Code", "Cascadia Mono", "IBM Plex Mono", monospace;
+  font-size: .72rem;
+  color: var(--muted);
+}
+
+/* Progress */
+.progress-wrap {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 120;
+  height: 3px;
+  background: color-mix(in srgb, var(--ink) 10%, transparent);
+}
+
+.progress-bar {
+  width: 0;
+  height: 100%;
+  background: var(--ink);
+  transform-origin: left;
+}
+
+/* Gallery modal */
+.gallery-overlay,
+.image-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: var(--overlay-bg);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .32s var(--ease), visibility .32s;
+}
+
+.gallery-overlay.open,
+.image-viewer.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.gallery-shell {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  padding: clamp(24px,5vw,74px);
+  transform: translateY(18px);
+  transition: transform .45s var(--ease);
+}
+
+.gallery-overlay.open .gallery-shell { transform: none; }
+
+.gallery-topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--ink);
+}
+
+.gallery-topbar h2 {
+  margin: 5px 0 0;
+  font-size: clamp(2.8rem,5vw,5.8rem);
+  letter-spacing: -.055em;
+  font-weight: 500;
+}
+
+.icon-button {
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--ink);
+  background: transparent;
+  font-size: 1.7rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .2s, color .2s, transform .2s;
+}
+
+.icon-button:hover {
+  background: var(--ink);
+  color: var(--paper);
+  transform: rotate(5deg);
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 18px;
+  padding: 28px 0;
+}
+
+.gallery-thumb {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.gallery-thumb img {
+  width: 100%;
+  display: block;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  filter: saturate(.8);
+  transition: transform .45s var(--ease), filter .45s;
+}
+
+.gallery-thumb:hover img {
+  transform: scale(1.025);
+  filter: saturate(1);
+}
+
+.gallery-thumb span {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .6rem;
+}
+
+.image-viewer {
+  z-index: 700;
+  display: grid;
+  place-items: center;
+  padding: 5vh 5vw;
+  overflow: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y pinch-zoom;
+  background: rgba(20,20,20,.97);
+}
+
+.image-viewer img {
+  max-width: 90vw;
+  max-height: 82vh;
+  object-fit: contain;
+  box-shadow: 0 20px 80px rgba(0,0,0,.35);
+  transform: scale(.97);
+  transition: transform .35s var(--ease);
+}
+
+.image-viewer.open img { transform: scale(1); }
+
+.viewer-close {
+  position: absolute;
+  right: 4vw;
+  top: 4vh;
+  border-color: rgba(255,255,255,.55);
+  color: white;
+}
+
+.viewer-close:hover {
+  background: white;
+  color: #181818;
+}
+
+#viewerCaption {
+  position: absolute;
+  bottom: 2.3vh;
+  color: #c7c1b7;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .65rem;
+  letter-spacing: .06em;
+}
+
+body.modal-open,
+html.modal-open {
+  overflow: hidden !important;
+}
+
+.gallery-overlay.open { pointer-events: auto; }
+
+.gallery-shell[data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .project-copy { width: 51vw; }
+  .gallery-trigger { right: 5vw; width: 34vw; }
+  .about-layout { grid-template-columns: .4fr 1.2fr 1fr; }
+
+  .hack-layout {
+    grid-template-columns: .35fr 1fr 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .hack-heading { grid-column: 2 / span 2; }
+  .hack-card.card-one { grid-column: 2; }
+  .hack-card.card-two { grid-column: 3; }
+  .hack-layout .section-label { grid-row: 1 / span 2; }
+}
+
+@media (max-width: 900px) {
+  :root {
+    --header-h: 72px;
+    --pad: 22px;
+  }
+
+  html {
+    width: 100%;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  body {
+    width: 100%;
+    height: auto !important;
+    overflow-x: hidden;
+    overflow-y: visible;
+  }
+
+  .site-header {
+    grid-template-columns: 1fr auto;
+  }
+
+  .desktop-nav { display: none; }
+  .header-tools { grid-column: 2; }
+
+  .viewport {
+    position: static;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .track {
+    display: block;
+    width: 100%;
+    height: auto;
+    transform: none !important;
+  }
+
+  .panel {
+    width: 100%;
+    height: auto;
+    min-height: 100svh;
+    padding: calc(var(--header-h) + 42px) var(--pad) 58px;
+    overflow: hidden;
+  }
+
+  .hero-panel { min-height: 100svh; }
+  .hero-copy { width: 100%; }
+
+  .hero-copy h1 {
+    font-size: clamp(5rem,24vw,8.4rem);
+  }
+
+  .hero-intro { width: 92%; }
+
+  .scroll-cue span:nth-child(2) { font-size: 0; }
+
+  .scroll-cue span:nth-child(2)::after {
+    content: "Scroll to explore";
+    font-size: .64rem;
+  }
+
+  .arrow {
+    transform: rotate(90deg);
+    animation: nudgeMobile 1.5s ease-in-out infinite;
+  }
+
+  @keyframes nudgeMobile {
+    50% { transform: rotate(90deg) translateX(5px); }
+  }
+
+  .about-layout,
+  .hack-layout {
+    display: block;
+    height: auto;
+  }
+
+  .section-label {
+    padding-top: 0;
+    margin-bottom: 52px;
+  }
+
+  .about-main h2,
+  .hack-heading h2,
+  .contact-layout h2 {
+    font-size: clamp(3.4rem,14vw,6rem);
+  }
+
+  .skill-stack { margin-top: 42px; }
+
+  .skill-row {
+    grid-template-columns: 32px 105px 1fr;
+  }
+
+  .project-panel {
+    min-height: 118svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .project-copy {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 100%;
+    padding-top: 42px;
+    transform: none;
+  }
+
+  .project-copy h2 {
+    font-size: clamp(4.5rem,20vw,7.4rem);
+  }
+
+  .project-copy h2.single-line-title {
+    white-space: nowrap;
+    font-size: clamp(3.2rem,15.7vw,5.8rem);
+  }
+
+  .gallery-trigger {
+    position: relative;
+    right: auto;
+    top: auto;
+    width: min(88vw,440px);
+    align-self: flex-end;
+    margin-top: 48px;
+    margin-right: 8px;
+    opacity: 1;
+    transform: translate3d(0,0,0);
+  }
+
+  .hack-heading { margin-bottom: 42px; }
+
+  .hack-card {
+    min-height: 320px;
+    margin: 18px 0;
+  }
+
+  .contact-panel { min-height: 100svh; }
+
+  .contact-layout {
+    width: 100%;
+    min-height: calc(100svh - var(--header-h) - 100px);
+    justify-content: center;
+  }
+
+  .contact-meta {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-top: 7vh;
+  }
+
+  .gallery-grid { grid-template-columns: 1fr; }
+
+  .progress-wrap {
+    top: 0;
+    bottom: auto;
+    z-index: 150;
+  }
+}
+
+@media (max-width: 560px) {
+  .brand-signature { font-size: .7rem; }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .skill-row {
+    grid-template-columns: 28px 1fr;
+  }
+
+  .skill-row p { grid-column: 2; }
+
+  .project-points li { font-size: .86rem; }
+
+  .gallery-shell { padding: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
