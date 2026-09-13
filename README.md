@@ -1,4 +1,4 @@
-# Dhruvil Rana — Portfolio
+# Dhruvil Rana - Portfolio
 
 A responsive personal portfolio for showcasing software, game-development and academic projects. The desktop experience uses horizontal storytelling controlled by normal vertical scrolling, while smaller screens switch to a conventional vertical layout.
 
