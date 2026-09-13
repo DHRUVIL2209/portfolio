@@ -115,35 +115,7 @@ Then open:
 http://localhost:8000
 ```
 
-## GitHub Pages Deployment
 
-1. Create or open the GitHub repository for the portfolio.
-2. Place the contents of this folder at the repository root.
-3. Commit and push the files.
-4. Open **Settings → Pages** in the repository.
-5. Under **Build and deployment**, choose **Deploy from a branch**.
-6. Select the branch containing the portfolio, usually `main`, and choose the `/ (root)` folder.
-7. Save the configuration.
-
-GitHub Pages will publish the site without any build process.
-
-## Updating Projects
-
-Project content is written directly in `index.html`.
-
-To add screenshots to an existing project:
-
-1. Add the WebP files to `assets/screenshots/` using the existing numbering convention.
-2. Update the corresponding screenshot count in `script.js`.
-3. Update the visible screenshot count on the project's gallery cover in `index.html`.
-
-For example, if a project grows from 5 screenshots to 7:
-
-```js
-space: { title: 'Space22', files: numberedFiles('space', 7) }
-```
-
-Keep project cover images named with the `-cover.webp` suffix.
 
 ## Theme System
 
@@ -202,13 +174,6 @@ The site loads the following libraries and fonts from public CDNs:
 - Cascadia Code
 
 The core content remains readable if animation libraries fail to load, but an internet connection is required for the CDN-hosted typography and enhanced scrolling libraries unless they are self-hosted later.
-
-## Maintenance Notes
-
-- Keep screenshots compressed as WebP to avoid unnecessarily large repository and page sizes.
-- Avoid adding generated build folders or unrelated source assets to the repository.
-- Keep `assets/ui/` limited to UI resources actively used by the current design.
-- If dependencies are self-hosted in the future, update the `<script>` and `<link>` references in `index.html`.
 
 ## License
 
