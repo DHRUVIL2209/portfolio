@@ -2,8 +2,6 @@
 
 A responsive personal portfolio for showcasing software, game-development and academic projects. The desktop experience uses horizontal storytelling controlled by normal vertical scrolling, while smaller screens switch to a conventional vertical layout.
 
-The site is fully static and can be hosted directly on GitHub Pages or any other static hosting service.
-
 ## Highlights
 
 - Horizontal desktop navigation with smooth wheel/trackpad scrolling
