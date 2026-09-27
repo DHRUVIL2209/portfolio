@@ -31,4 +31,4 @@ The portfolio also features two team projects:
 
 ## Contact
 
-The final section provides a direct email link, GitHub profile, location, and language information.
+The final section provides a direct email link, GitHub profile, location, and language information. Resume and CV links open an in-page viewer with a PDF download option.

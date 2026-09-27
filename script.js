@@ -12,6 +12,12 @@ const imageViewer = document.getElementById('imageViewer');
 const viewerImage = document.getElementById('viewerImage');
 const viewerCaption = document.getElementById('viewerCaption');
 const closeViewer = document.getElementById('closeViewer');
+const documentViewer = document.getElementById('documentViewer');
+const documentViewerTitle = document.getElementById('documentViewerTitle');
+const documentViewerPages = document.getElementById('documentViewerPages');
+const documentDownload = document.getElementById('documentDownload');
+const documentZoom = document.getElementById('documentZoom');
+const closeDocumentViewerButton = document.getElementById('closeDocumentViewer');
 const themeToggle = document.getElementById('themeToggle');
 const themeColorMeta = document.getElementById('themeColorMeta');
 const typedFirst = document.getElementById('typedFirst');
@@ -65,6 +71,20 @@ const galleries = {
     files: ['space-01.webp','space-02.webp','space-03.webp','space-04.webp','space-05.webp']
   }
 };
+
+const documents = {
+  resume: {
+    title: 'Resume',
+    pdf: 'assets/documents/Dhruvil_Resume.pdf',
+    pages: ['assets/documents/previews/resume-1.webp']
+  },
+  cv: {
+    title: 'CV',
+    pdf: 'assets/documents/Dhruvil_CV.pdf',
+    pages: ['assets/documents/previews/cv-1.webp', 'assets/documents/previews/cv-2.webp']
+  }
+};
+let documentOpener = null;
 
 totalPanels.textContent = String(panels.length).padStart(2, '0');
 
@@ -474,7 +494,7 @@ function pausePageScroll() {
 }
 
 function resumePageScroll() {
-  if (galleryOverlay.classList.contains('open') || imageViewer.classList.contains('open')) return;
+  if (galleryOverlay.classList.contains('open') || imageViewer.classList.contains('open') || documentViewer.classList.contains('open')) return;
   document.body.classList.remove('modal-open');
   document.documentElement.classList.remove('modal-open');
   lenis?.start();
@@ -535,6 +555,50 @@ function closeImageViewer() {
   resumePageScroll();
 }
 
+function setDocumentZoom(zoomed) {
+  documentViewer.classList.toggle('zoomed', zoomed);
+  documentZoom.setAttribute('aria-pressed', String(zoomed));
+  documentZoom.setAttribute('aria-label', zoomed ? 'Fit document to width' : 'Zoom in on document');
+  documentZoom.textContent = zoomed ? '−' : '+';
+}
+
+function openDocument(key, opener) {
+  const entry = documents[key];
+  if (!entry) return;
+
+  documentOpener = opener;
+  documentViewerTitle.textContent = entry.title;
+  documentDownload.href = entry.pdf;
+  documentDownload.download = entry.pdf.split('/').pop();
+  documentViewerPages.replaceChildren(...entry.pages.map((src, index) => {
+    const page = document.createElement('figure');
+    const image = document.createElement('img');
+    page.className = 'document-page';
+    image.src = src;
+    image.alt = entry.title + ' — page ' + (index + 1) + ' of ' + entry.pages.length;
+    image.loading = index ? 'lazy' : 'eager';
+    image.decoding = 'async';
+    page.append(image);
+    return page;
+  }));
+  setDocumentZoom(false);
+  documentViewer.classList.add('open');
+  documentViewer.setAttribute('aria-hidden', 'false');
+  pausePageScroll();
+  documentViewerPages.scrollTop = 0;
+  documentViewerPages.scrollLeft = 0;
+  closeDocumentViewerButton.focus();
+}
+
+function closeDocumentModal() {
+  documentViewer.classList.remove('open');
+  documentViewer.setAttribute('aria-hidden', 'true');
+  setDocumentZoom(false);
+  resumePageScroll();
+  documentOpener?.focus();
+  documentOpener = null;
+}
+
 const THEME_STORAGE_KEY = 'dhruvil-portfolio-theme';
 
 function getTheme() {
@@ -569,6 +633,21 @@ document.querySelectorAll('.gallery-trigger').forEach(button => {
   button.addEventListener('click', () => openGallery(button.dataset.gallery));
 });
 
+document.querySelectorAll('[data-document]').forEach(link => {
+  link.addEventListener('click', event => {
+    event.preventDefault();
+    openDocument(link.dataset.document, link);
+  });
+});
+closeDocumentViewerButton.addEventListener('click', closeDocumentModal);
+documentZoom.addEventListener('click', () => setDocumentZoom(!documentViewer.classList.contains('zoomed')));
+documentViewerPages.addEventListener('click', event => {
+  if (event.target.closest('.document-page')) setDocumentZoom(!documentViewer.classList.contains('zoomed'));
+});
+documentViewer.addEventListener('click', event => {
+  if (event.target === documentViewer) closeDocumentModal();
+});
+
 closeGallery.addEventListener('click', closeGalleryModal);
 closeViewer.addEventListener('click', closeImageViewer);
 
@@ -581,6 +660,23 @@ imageViewer.addEventListener('click', event => {
 });
 
 document.addEventListener('keydown', event => {
+  if (documentViewer.classList.contains('open')) {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      closeDocumentModal();
+    } else if (event.key === 'Tab') {
+      const controls = [documentZoom, documentDownload, closeDocumentViewerButton];
+      const first = controls[0], last = controls[controls.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+    return;
+  }
   if (event.key === 'Escape') {
     if (imageViewer.classList.contains('open')) closeImageViewer();
     else if (galleryOverlay.classList.contains('open')) closeGalleryModal();

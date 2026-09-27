@@ -22,7 +22,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400&family=Syne:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/cascadia-code@5.3.0/400.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/cascadia-code@5.3.0/500.css">
-  <link rel="stylesheet" href="styles.css?v=responsive-float-1" />
+  <link rel="stylesheet" href="styles.css?v=document-viewer-1" />
 </head>
 <body>
   <div id="ambient-background" aria-hidden="true"></div>
@@ -251,8 +251,8 @@
             <div>
               <span>Links</span>
               <p><a href="https://github.com/DHRUVIL2209" target="_blank" rel="noopener noreferrer">GitHub</a></p>
-              <p><a href="assets/documents/Dhruvil_Resume.pdf" type="application/pdf" download="Dhruvil_Resume.pdf">Resume (PDF)</a></p>
-              <p><a href="assets/documents/Dhruvil_CV.pdf" type="application/pdf" download="Dhruvil_CV.pdf">CV (PDF)</a></p>
+              <p><a href="assets/documents/Dhruvil_Resume.pdf" type="application/pdf" download="Dhruvil_Resume.pdf" data-document="resume">Resume (PDF)</a></p>
+              <p><a href="assets/documents/Dhruvil_CV.pdf" type="application/pdf" download="Dhruvil_CV.pdf" data-document="cv">CV (PDF)</a></p>
             </div>
             <div><span>Languages</span><p>Gujarati — Native<br>Hindi — Fluent<br>English — Proficient</p></div>
           </div>
@@ -280,10 +280,27 @@
     <p id="viewerCaption"></p>
   </div>
 
+  <div class="document-viewer" id="documentViewer" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="documentViewerTitle">
+    <div class="document-viewer-shell">
+      <div class="document-viewer-topbar">
+        <div>
+          <span class="mono">DOCUMENT VIEWER</span>
+          <h2 id="documentViewerTitle">Resume</h2>
+        </div>
+        <div class="document-viewer-actions">
+          <button class="icon-button" id="documentZoom" type="button" aria-label="Zoom in on document" aria-pressed="false">+</button>
+          <a class="document-download" id="documentDownload" href="assets/documents/Dhruvil_Resume.pdf" type="application/pdf" download="Dhruvil_Resume.pdf">↓ Download PDF</a>
+          <button class="icon-button" id="closeDocumentViewer" type="button" aria-label="Close document viewer">×</button>
+        </div>
+      </div>
+      <div class="document-viewer-pages" id="documentViewerPages" data-lenis-prevent></div>
+    </div>
+  </div>
+
   <script src="assets/vendor/gsap.min.js"></script>
   <script src="assets/vendor/ScrollTrigger.min.js"></script>
   <script src="assets/vendor/lenis.min.js"></script>
   <script src="ambient.js?v=responsive-float-1"></script>
-  <script src="script.js"></script>
+  <script src="script.js?v=document-viewer-1"></script>
 </body>
 </html>
