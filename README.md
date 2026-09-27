@@ -1,63 +1,34 @@
-# Dhruvil Rana Portfolio — Cleaned Version 43 with v39 Scrolling
+# Dhruvil Rana — Portfolio
 
-Upload the contents of this folder to the same GitHub Pages location as before.
-There is no build step. To preview locally, run `python -m http.server 8000`
-and open http://localhost:8000.
+A personal portfolio showcasing software and game development projects, technical skills, and hackathon work. It brings together web applications, mobile workflows, databases, and independent game development in a responsive visual experience.
 
-## Scrolling
+## Portfolio experience
 
-- The bundled Lenis smoother now handles vertical wheel input and touch input
-  in the mobile layout, as well as the existing desktop horizontal experience.
-- Scrolling uses the smoother v39 Lenis configuration: `lerp: 0.18`,
-  `wheelMultiplier: 1.22`, `touchMultiplier: 1` and `syncTouch: false`.
-  Phones therefore retain native touch movement and momentum.
-- Touch movement follows the finger with a gentle glide after release. A new
-  touch interrupts the glide. Mobile sections never snap to a fixed height.
-- The mobile layout stacks text, skills, cards and covers in normal document
-  flow. Sections expand to fit their content and remain vertical in landscape.
-- Sections reveal at approximately 15% viewport entry and fade near 85% exit.
-- Galleries keep their own native scrolling. Opening a gallery pauses page
-  inertia; closing it resumes the page at the same position.
-- Reduced-motion preferences disable the smoother and decorative animation.
-  Native scrolling also remains available if the Lenis file cannot load.
-- Section geometry is cached on layout changes. The progress bar uses a
-  transform, and mobile decoration updates wait until scrolling settles.
+The portfolio has nine sections: Home, About, five featured projects, Hackathons, and Contact. Desktop visitors move through a horizontal presentation; on phones and touch devices, the same content follows a vertical layout. Light and dark themes, gentle background motion, and project image galleries support the presentation without taking attention away from the work.
 
-## Background and content
+Each featured project includes a summary, its technology or project context, selected contributions, and a screenshot gallery with a full-size image viewer. Navigation and gallery controls are available by pointer or keyboard, and the interface respects reduced-motion preferences.
 
-- Off-white (#f3efe6) and dark (#282828) base colors are retained.
-- Theme-matched outlines have cyan, lavender, mint, amber and coral glows,
-  with softer colors for the light theme and brighter colors for dark mode.
-- Added a debugging bug, joystick and a path-with-nodes icon. There are 13
-  SVG accents on desktop and 9 on mobile, with no WebGL or canvas rendering.
-- Icons dim near readable content. Mobile icons stay still during a swipe,
-  then gently rotate to their new angles once scrolling settles.
-- Frolison Waterways naming, the centered Stint22 cover and all Savvy.shop
-  screenshot privacy blurs are preserved. Image files are unchanged in v43.
+## Featured projects
 
-## Cleanup
+| Project | Overview |
+| --- | --- |
+| **Frolison Waterways** | An Android-focused 3D endless runner in development. Players guide a boat through dynamically generated waterways using a three-lane movement system. The portfolio highlights swipe controls, collision handling, reusable environment segments, and a Blender-to-Unity asset pipeline. |
+| **Savvy.shop** | A multi-role e-commerce platform with customer, vendor, administrator, and delivery workflows. It covers product discovery, orders, inventory, reviews, and reporting. |
+| **Skroll** | A social platform with media posts, profiles, following relationships, user search, and notifications, backed by relational data. |
+| **Stint22** | A scheduling and task-management system with dashboards for business users, teachers, and students, alongside team assignment and reporting features. |
+| **Space22** | An early 2D space-fighter game with player movement, combat, enemy encounters, and two playable levels. |
 
-- Audited all 83 source, asset and vendor files. Every screenshot is referenced,
-  so no portfolio images were removed. GSAP, ScrollTrigger and Lenis are all
-  required by the desktop and mobile scrolling paths.
-- Removed unused HTML classes, CSS selectors and declarations, a duplicate
-  counter update, unused JavaScript state, unused webfont weights, an empty
-  image request and redundant markup.
-- Preserved the native desktop fallback, native reduced-motion behavior,
-  gallery scroll isolation and the Lenis licence.
+## About and skills
 
-## Files
+The About section introduces Dhruvil's background as a Bachelor of Computer Applications graduate from CVM University and his focus on practical software and interactive projects. It presents skills across programming, web and mobile development, databases, game and 3D workflows, and 2D animation.
 
-- index.html: content and structure
-- styles.css: layout, themes, responsive states and SVG styling
-- script.js: navigation, scrolling, mobile reveals, galleries and theme toggle
-- ambient.js: decorative SVG icons, color palette and scroll response
-- assets/screenshots: portfolio images, including baked-in privacy edits
-- assets/vendor: bundled GSAP, ScrollTrigger and Lenis dependencies
+## Hackathons
 
-Existing fonts load from their CDNs. Verified in Chromium browser emulation:
-the restored v39 scroll behavior, vertical wheel easing, all 69 gallery
-images and the full-size viewer, both themes, reduced motion, native desktop
-fallback, horizontal navigation and responsive layouts. Layout checks cover
-320×568, 390×844, 430×932, 768×1024, 932×430 and 1440×900 viewports.
-The cleaned desktop render was also compared pixel for pixel with the source.
+The portfolio also features two team projects:
+
+- **Alumni Association Platform — CodeManthan 1.0:** event dashboards, job posts, alumni discovery, profiles, donations, and feedback.
+- **Billing & Inventory App — CVMU Hackathon 3.0:** an offline-capable billing workflow with reusable items, bill history, and sharing features for small businesses.
+
+## Contact
+
+The final section provides a direct email link, GitHub profile, location, and language information.

@@ -27,14 +27,32 @@
   const [light,dark]=palette[colorIndexes[i]];
   el.className='ambient-item'+(i>=6&&i<10?' ambient-desktop-only':'');
   el.dataset.icon=names[i];
-  el.style.cssText=`--x:${x}%;--y:${y}%;--size:${size}px;--mx:${mx}%;--my:${my}%;--delay:${-i*1.8}s;--start-angle:${startAngles[i]}deg;--glow-light:${light};--glow-dark:${dark}`;
+  el.style.cssText=`--x:${x}%;--y:${y}%;--size:${size}px;--delay:${-i*1.8}s;--float-duration:${(5.5+i*.27).toFixed(2)}s;--start-angle:${startAngles[i]}deg;--glow-light:${light};--glow-dark:${dark}`;
   el.innerHTML=`<div class="ambient-rotate"><svg viewBox="0 0 64 64" focusable="false">${icons[i]}</svg></div>`;
   root.append(el);
   return el;
  });
  const mobileElements=elements.filter(el=>!el.classList.contains('ambient-desktop-only'));
+ const mobilePositions=positions.filter((_,i)=>i<6||i>=10);
  const copyByPanel=[...document.querySelectorAll('.panel')].map(panel=>({panel,blocks:[...panel.querySelectorAll('h1,h2,h3,p,.text-link,.project-meta,.project-points,.skill-stack,.hack-details,.contact-layout,.gallery-trigger')]}));
- let pending=0,progress=0,lastCheck=0,settleTimer=0,touching=false;
+ let pending=0,positionFrame=0,positionTimer=0,progress=0,lastCheck=0,settleTimer=0,touching=false;
+ function positionMobileIcons(){
+  positionFrame=0;
+  if(!mobile.matches)return;
+  const viewport=window.visualViewport;
+  // Ignore pinch zoom: the decorations should not chase the zoomed view.
+  const width=viewport&&viewport.scale===1?viewport.width:innerWidth;
+  const height=viewport&&viewport.scale===1?viewport.height:innerHeight;
+  mobileElements.forEach((el,i)=>{
+   const [, , , mx, my]=mobilePositions[i];
+   el.style.transform=`translate3d(${(width*mx/100).toFixed(2)}px,${(height*my/100).toFixed(2)}px,0)`;
+  });
+  clearTimeout(positionTimer);
+  positionTimer=setTimeout(protectCopy,750);
+ }
+ function queueMobilePosition(){
+  if(mobile.matches&&!positionFrame)positionFrame=requestAnimationFrame(positionMobileIcons);
+ }
  function protectCopy(){
   if(mobile.matches&&touching)return;
   const inView=r=>r.right>0&&r.left<innerWidth&&r.bottom>0&&r.top<innerHeight;
@@ -74,11 +92,25 @@
   clearTimeout(settleTimer);
   touching=false;
   root.classList.remove('ambient-touching');
+  root.classList.remove('ambient-positioned');
+  cancelAnimationFrame(positionFrame);
+  positionFrame=0;
+  if(mobile.matches){
+   positionMobileIcons();
+   requestAnimationFrame(()=>root.classList.add('ambient-positioned'));
+  }else{
+   clearTimeout(positionTimer);
+   elements.forEach(el=>el.style.removeProperty('transform'));
+  }
   elements.forEach(el=>el.firstElementChild.style.removeProperty('transform'));
   rotateIcons();
   window.portfolioAmbient.setProgress(progress);
  }
- addEventListener('resize',()=>window.portfolioAmbient.setProgress(progress),{passive:true});
+ addEventListener('resize',()=>{
+  queueMobilePosition();
+  window.portfolioAmbient.setProgress(progress);
+ },{passive:true});
+ window.visualViewport?.addEventListener('resize',queueMobilePosition,{passive:true});
  addEventListener('touchstart',()=>{
   if(!mobile.matches)return;
   touching=true;

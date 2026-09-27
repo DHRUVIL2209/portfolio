@@ -317,17 +317,20 @@ body,.site-header { transition:background-color .45s ease,color .35s ease,border
 html[data-theme="dark"] #ambient-background {background:#282828;color:#f3efe6;}
 .ambient-item {--glow-color:var(--glow-light);position:absolute;left:var(--x);top:var(--y);width:var(--size);height:var(--size);opacity:.18;transition:opacity .4s ease;}
 .ambient-rotate {width:100%;height:100%;transform:rotate(var(--start-angle));transition:transform .6s ease-out;}
-.ambient-item svg {width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 2px var(--glow-color)) drop-shadow(0 0 5px var(--glow-color));animation:ambient-float 17s ease-in-out infinite alternate;animation-delay:var(--delay);}
+.ambient-item svg {width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 2px var(--glow-color)) drop-shadow(0 0 5px var(--glow-color));animation:ambient-float var(--float-duration) ease-in-out infinite alternate;animation-delay:var(--delay);}
 .ambient-item.near-copy {opacity:.018;}
 html[data-theme="dark"] .ambient-item {--glow-color:var(--glow-dark);opacity:.24;}
 html[data-theme="dark"] .ambient-item.near-copy {opacity:.022;}
-@keyframes ambient-float {from{transform:translateY(-3px)}to{transform:translateY(4px)}}
+@keyframes ambient-float {from{transform:translate3d(0,-6px,0)}to{transform:translate3d(0,6px,0)}}
 
 @media (max-width:900px), (hover:none) {
- .ambient-item {left:var(--mx);top:var(--my);width:calc(var(--size) * .65);height:calc(var(--size) * .65);opacity:.13;}
- html[data-theme="dark"] .ambient-item {opacity:.18;}
+ /* Pixel targets are eased on the outer layer when the visible viewport changes. */
+ #ambient-background {bottom:auto;height:100vh;height:100lvh;transition:background-color .45s ease,color .45s ease;}
+ .ambient-item {left:0;top:0;width:calc(var(--size) * .65);height:calc(var(--size) * .65);opacity:.24;transition:opacity .4s ease;}
+ .ambient-positioned .ambient-item {transition:transform .68s cubic-bezier(.2,.75,.25,1),opacity .4s ease;}
+ html[data-theme="dark"] .ambient-item {opacity:.30;}
  .ambient-desktop-only{display:none;}
- .ambient-item svg{animation:none;}
+ .ambient-item svg{will-change:transform;}
  .ambient-touching .ambient-rotate{transition:none;}
 }
 @media(prefers-reduced-motion:reduce){
