@@ -17,13 +17,17 @@ const themeColorMeta = document.getElementById('themeColorMeta');
 const typedFirst = document.getElementById('typedFirst');
 const typedLast = document.getElementById('typedLast');
 
-const desktopQuery = window.matchMedia('(min-width: 901px)');
+const desktopQuery = window.matchMedia('(min-width: 901px) and (hover: hover)');
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 let activeIndex = 0;
 let desktopTween = null;
 let desktopTrigger = null;
 let mobileScrollHandler = null;
+let mobileResizeObserver = null;
+let mobileBounds = [];
+let mobileScrollLimit = 1;
+let scrollingMode = null;
 let fallbackCleanup = null;
 let resizeTimer = null;
 let scrollRaf = 0;
@@ -40,9 +44,9 @@ let idleSnapTimer = null;
 let isIdleSnapping = false;
 
 const galleries = {
-  frolic: {
-    title: 'Frolic Waterways',
-    files: ['frolic-01.webp','frolic-02.webp','frolic-03.webp','frolic-04.webp','frolic-05.webp']
+  frolison: {
+    title: 'Frolison Waterways',
+    files: ['frolison-01.webp','frolison-02.webp','frolison-03.webp','frolison-04.webp','frolison-05.webp']
   },
   savvy: {
     title: 'Savvy.shop',
@@ -70,50 +74,68 @@ function clampIndex(index) {
 
 function setActive(index) {
   index = clampIndex(index);
+  if (index === activeIndex && panels[index]?.classList.contains('active')) return;
   activeIndex = index;
 
   panels.forEach((panel, i) => panel.classList.toggle('active', i === index));
   currentPanel.textContent = String(index + 1).padStart(2, '0');
 }
 
-function updateCounter(index) {
-  currentPanel.textContent = String(clampIndex(index) + 1).padStart(2, '0');
-}
+function updateAmbientProgress(progress) {
+  const safeProgress = Math.max(0, Math.min(1, Number(progress) || 0));
 
+  window.portfolioAmbient?.setProgress(safeProgress);
+}
 
 function updateDesktopUI(progress) {
   const safeProgress = Math.max(0, Math.min(1, progress || 0));
-  progressBar.style.width = `${safeProgress * 100}%`;
+  progressBar.style.transform = `scaleX(${safeProgress})`;
+  updateAmbientProgress(safeProgress);
   const nearestIndex = Math.round(safeProgress * (panels.length - 1));
-  updateCounter(nearestIndex);
   setActive(nearestIndex);
 }
 
-function updateMobileUI() {
-  const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
-  const limit = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-  progressBar.style.width = `${Math.max(0, Math.min(1, scrollTop / limit)) * 100}%`;
-
-  const viewportCenter = window.innerHeight * 0.5;
-  let closest = activeIndex;
-  let bestDistance = Infinity;
-
-  panels.forEach((panel, index) => {
+function measureMobileLayout() {
+  // Read geometry only when the layout changes, never once per panel per frame.
+  const scrollTop = window.scrollY;
+  mobileBounds = panels.map(panel => {
     const rect = panel.getBoundingClientRect();
-    const center = rect.top + rect.height * 0.5;
-    const distance = Math.abs(center - viewportCenter);
-    if (distance < bestDistance) {
-      bestDistance = distance;
-      closest = index;
+    return { top: rect.top + scrollTop, bottom: rect.bottom + scrollTop };
+  });
+  mobileScrollLimit = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+  updateMobileUI();
+}
+
+function updateMobileUI() {
+  const scrollTop = window.scrollY;
+  const height = window.innerHeight;
+  const progress = Math.max(0, Math.min(1, scrollTop / mobileScrollLimit));
+  progressBar.style.transform = `scaleX(${progress})`;
+
+  updateAmbientProgress(progress);
+  const readingLine = scrollTop + height * 0.5;
+  let current = 0;
+
+  mobileBounds.forEach((bounds, index) => {
+    const visible = reducedMotion.matches ||
+      (bounds.top < scrollTop + height * .85 && bounds.bottom > scrollTop + height * .15);
+    const panel = panels[index];
+    if (panel.classList.contains('mobile-visible') !== visible) {
+      panel.classList.toggle('mobile-visible', visible);
     }
+    if (bounds.top <= readingLine) current = index;
   });
 
-  setActive(closest);
+  setActive(current);
 }
 
 function initLenis() {
   if (reducedMotion.matches || !window.Lenis || lenis) return;
+  const desktop = desktopQuery.matches;
+  if (desktop && (!window.gsap || !window.ScrollTrigger)) return;
 
+  // Match the smooth v39 behavior on both layouts. Touch remains native on
+  // phones; Lenis smooths wheel input and observes native touch scrolling.
   lenis = new Lenis({
     lerp: 0.18,
     smoothWheel: true,
@@ -123,7 +145,7 @@ function initLenis() {
     autoResize: true
   });
 
-  // Lenis owns the smoothing; ScrollTrigger only reads the smoothed scroll position.
+  // Lenis owns wheel smoothing; ScrollTrigger reads its desktop position.
   lenis.on('scroll', () => {
     if (window.ScrollTrigger) ScrollTrigger.update();
 
@@ -290,6 +312,12 @@ function cleanupScrolling() {
     mobileScrollHandler = null;
   }
 
+  mobileResizeObserver?.disconnect();
+  mobileResizeObserver = null;
+  mobileBounds = [];
+  document.documentElement.classList.remove('mobile-reveals');
+  panels.forEach(panel => panel.classList.remove('mobile-visible'));
+
   if (fallbackCleanup) {
     fallbackCleanup();
     fallbackCleanup = null;
@@ -306,7 +334,10 @@ function cleanupScrolling() {
     track.style.transform = '';
   }
 
-  document.documentElement.classList.remove('gsap-horizontal');
+  if (lenisTicker && window.gsap) gsap.ticker.remove(lenisTicker);
+  lenisTicker = null;
+  lenis?.destroy();
+  lenis = null;
 }
 
 function getDesktopScrollPerPanel() {
@@ -326,15 +357,22 @@ function initDesktopScrolling() {
     };
 
     viewport.addEventListener('scroll', onNativeScroll, { passive: true });
-    fallbackCleanup = () => viewport.removeEventListener('scroll', onNativeScroll);
+    const onWheel = event => {
+      if (document.body.classList.contains('modal-open') || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+      event.preventDefault();
+      viewport.scrollLeft += event.deltaY;
+    };
+    viewport.addEventListener('wheel', onWheel, { passive: false });
+    fallbackCleanup = () => {
+      viewport.removeEventListener('scroll', onNativeScroll);
+      viewport.removeEventListener('wheel', onWheel);
+    };
     onNativeScroll();
     return;
   }
 
   gsap.registerPlugin(ScrollTrigger);
   document.documentElement.classList.remove('native-horizontal');
-  document.documentElement.classList.add('gsap-horizontal');
-
   const maxX = () => Math.max(0, track.scrollWidth - window.innerWidth);
   const scrollDistance = () => getDesktopScrollPerPanel() * (panels.length - 1);
 
@@ -369,11 +407,11 @@ function initDesktopScrolling() {
   updateDesktopUI(initialProgress);
 }
 
-function initMobileScrolling() {
+function initMobileScrolling(fromDesktop) {
   document.documentElement.classList.remove('native-horizontal');
 
-  // If Lenis is available its scroll event updates the UI. Keep a native fallback
-  // so the mobile layout still works offline if the Lenis CDN fails.
+  // Lenis updates the UI directly. Native scrolling remains the fallback for
+  // reduced motion or a missing library, without a second animation loop.
   if (!lenis) {
     mobileScrollHandler = () => {
       if (scrollRaf) return;
@@ -385,15 +423,23 @@ function initMobileScrolling() {
     window.addEventListener('scroll', mobileScrollHandler, { passive: true });
   }
 
-  const top = panels[activeIndex]?.offsetTop || 0;
-  smoothScrollTo(top, true);
-  updateMobileUI();
+  if (fromDesktop) smoothScrollTo(panels[activeIndex]?.offsetTop || 0, true);
+  measureMobileLayout();
+  document.documentElement.classList.add('mobile-reveals');
+
+  if (window.ResizeObserver) {
+    mobileResizeObserver = new ResizeObserver(measureMobileLayout);
+    mobileResizeObserver.observe(track);
+  }
 }
 
 function initScrolling() {
+  const fromDesktop = scrollingMode === 'desktop';
   cleanupScrolling();
+  initLenis();
   if (desktopQuery.matches) initDesktopScrolling();
-  else initMobileScrolling();
+  else initMobileScrolling(fromDesktop);
+  scrollingMode = desktopQuery.matches ? 'desktop' : 'mobile';
 }
 
 function goToPanel(index) {
@@ -419,9 +465,10 @@ document.querySelectorAll('[data-panel]').forEach(element => {
 });
 
 function pausePageScroll() {
-  // Do not stop Lenis here. The gallery itself is a nested scroll container
-  // marked with data-lenis-prevent, so wheel/touch input inside the modal is
-  // handed back to the browser while the underlying page stays locked.
+  cancelIdleSnapTimer();
+  isIdleSnapping = false;
+  lenis?.stop();
+  // Gallery containers opt out of Lenis and keep their own native scrolling.
   document.body.classList.add('modal-open');
   document.documentElement.classList.add('modal-open');
 }
@@ -430,8 +477,10 @@ function resumePageScroll() {
   if (galleryOverlay.classList.contains('open') || imageViewer.classList.contains('open')) return;
   document.body.classList.remove('modal-open');
   document.documentElement.classList.remove('modal-open');
+  lenis?.start();
   lenis?.resize();
-  if (window.ScrollTrigger) ScrollTrigger.update();
+  if (desktopQuery.matches && window.ScrollTrigger) ScrollTrigger.update();
+  else updateMobileUI();
 }
 
 function openGallery(key) {
@@ -595,18 +644,17 @@ function typeName() {
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(() => {
-    lenis?.resize();
-    if (desktopQuery.matches && window.ScrollTrigger) ScrollTrigger.refresh();
-    else updateMobileUI();
+    if (desktopQuery.matches && window.ScrollTrigger) {
+      lenis?.resize();
+      ScrollTrigger.refresh();
+    }
+    else measureMobileLayout();
   }, 140);
 });
 
-desktopQuery.addEventListener('change', () => {
-  // Let Lenis keep the current vertical position while the layout switches modes.
-  initScrolling();
-});
+desktopQuery.addEventListener('change', initScrolling);
+reducedMotion.addEventListener('change', initScrolling);
 
 // Initialize the smooth-scroll layer first, then let ScrollTrigger read it.
-initLenis();
 typeName();
 initScrolling();

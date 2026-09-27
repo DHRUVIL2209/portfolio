@@ -1,180 +1,63 @@
-# Dhruvil Rana - Portfolio
+# Dhruvil Rana Portfolio — Cleaned Version 43 with v39 Scrolling
 
-A responsive personal portfolio for showcasing software, game-development and academic projects. The desktop experience uses horizontal storytelling controlled by normal vertical scrolling, while smaller screens switch to a conventional vertical layout.
+Upload the contents of this folder to the same GitHub Pages location as before.
+There is no build step. To preview locally, run `python -m http.server 8000`
+and open http://localhost:8000.
 
-The site is fully static and can be hosted directly on GitHub Pages or any other static hosting service.
+## Scrolling
 
-## Highlights
+- The bundled Lenis smoother now handles vertical wheel input and touch input
+  in the mobile layout, as well as the existing desktop horizontal experience.
+- Scrolling uses the smoother v39 Lenis configuration: `lerp: 0.18`,
+  `wheelMultiplier: 1.22`, `touchMultiplier: 1` and `syncTouch: false`.
+  Phones therefore retain native touch movement and momentum.
+- Touch movement follows the finger with a gentle glide after release. A new
+  touch interrupts the glide. Mobile sections never snap to a fixed height.
+- The mobile layout stacks text, skills, cards and covers in normal document
+  flow. Sections expand to fit their content and remain vertical in landscape.
+- Sections reveal at approximately 15% viewport entry and fade near 85% exit.
+- Galleries keep their own native scrolling. Opening a gallery pauses page
+  inertia; closing it resumes the page at the same position.
+- Reduced-motion preferences disable the smoother and decorative animation.
+  Native scrolling also remains available if the Lenis file cannot load.
+- Section geometry is cached on layout changes. The progress bar uses a
+  transform, and mobile decoration updates wait until scrolling settles.
 
-- Horizontal desktop navigation with smooth wheel/trackpad scrolling
-- Vertical mobile layout below 900px
-- Light and dark themes with persistent preference storage
-- Minimal responsive background artwork designed separately for desktop and mobile
-- Animated name introduction and section reveal transitions
-- Project galleries with full-size screenshot viewing
-- Idle slide settling: after scrolling stops, the most visible panel gently centers itself
-- Keyboard navigation with Arrow and Page Up/Page Down keys on desktop
-- Reduced-motion support through `prefers-reduced-motion`
-- Native horizontal-scroll fallback if GSAP or ScrollTrigger fail to load
+## Background and content
 
-## Portfolio Sections
+- Off-white (#f3efe6) and dark (#282828) base colors are retained.
+- Theme-matched outlines have cyan, lavender, mint, amber and coral glows,
+  with softer colors for the light theme and brighter colors for dark mode.
+- Added a debugging bug, joystick and a path-with-nodes icon. There are 13
+  SVG accents on desktop and 9 on mobile, with no WebGL or canvas rendering.
+- Icons dim near readable content. Mobile icons stay still during a swipe,
+  then gently rotate to their new angles once scrolling settles.
+- Frolison Waterways naming, the centered Stint22 cover and all Savvy.shop
+  screenshot privacy blurs are preserved. Image files are unchanged in v43.
 
-1. Home
-2. About / Skills
-3. Frolic Waterways
-4. Savvy.shop
-5. Skroll
-6. Stint22
-7. Space22
-8. Hackathons
-9. Contact
+## Cleanup
 
-## Tech Stack
+- Audited all 83 source, asset and vendor files. Every screenshot is referenced,
+  so no portfolio images were removed. GSAP, ScrollTrigger and Lenis are all
+  required by the desktop and mobile scrolling paths.
+- Removed unused HTML classes, CSS selectors and declarations, a duplicate
+  counter update, unused JavaScript state, unused webfont weights, an empty
+  image request and redundant markup.
+- Preserved the native desktop fallback, native reduced-motion behavior,
+  gallery scroll isolation and the Lenis licence.
 
-The portfolio intentionally uses a small static stack:
+## Files
 
-- HTML5
-- CSS3
-- Vanilla JavaScript
-- GSAP + ScrollTrigger for the desktop horizontal scroll mapping
-- Lenis for smooth wheel scrolling
-- Google Fonts and Cascadia Code through CDN-hosted stylesheets
+- index.html: content and structure
+- styles.css: layout, themes, responsive states and SVG styling
+- script.js: navigation, scrolling, mobile reveals, galleries and theme toggle
+- ambient.js: decorative SVG icons, color palette and scroll response
+- assets/screenshots: portfolio images, including baked-in privacy edits
+- assets/vendor: bundled GSAP, ScrollTrigger and Lenis dependencies
 
-There is no framework, package manager, build step or backend.
-
-## Project Structure
-
-```text
-.
-├── index.html
-├── styles.css
-├── script.js
-├── README.md
-└── assets
-    ├── screenshots
-    │   ├── frolic-*.webp
-    │   ├── savvy-*.webp
-    │   ├── skroll-*.webp
-    │   ├── stint-*.webp
-    │   ├── space-*.webp
-    │   └── *-cover.webp
-    └── ui
-        ├── background-desktop.svg
-        └── background-mobile.svg
-```
-
-### `index.html`
-
-Contains the semantic page structure, project information, navigation controls, gallery containers and theme initialization code.
-
-### `styles.css`
-
-Contains the complete visual system: themes, responsive layout, horizontal/vertical presentation, project cards, galleries, animations and background integration.
-
-### `script.js`
-
-Handles:
-
-- horizontal desktop scrolling
-- mobile scroll-state tracking
-- slide activation and counters
-- idle slide settling
-- theme persistence
-- project galleries and screenshot viewer
-- keyboard navigation
-- animated name typing
-
-### `assets/screenshots/`
-
-Stores project cover images and gallery screenshots in WebP format. Gallery filenames follow a predictable numbered structure such as:
-
-```text
-savvy-01.webp
-savvy-02.webp
-...
-savvy-26.webp
-```
-
-### `assets/ui/`
-
-Contains only the lightweight decorative SVG backgrounds used by the desktop and mobile layouts.
-
-## Running Locally
-
-Because this is a static site, it can be opened directly through `index.html`. Using a local web server is recommended so browser behavior matches production hosting more closely.
-
-With Python installed:
-
-```bash
-python -m http.server 8000
-```
-
-Then open:
-
-```text
-http://localhost:8000
-```
-
-
-
-## Theme System
-
-The two base colors are:
-
-```text
-Light: #f3efe6
-Dark:  #282828
-```
-
-The selected appearance is stored in the browser using:
-
-```text
-dhruvil-portfolio-theme
-```
-
-The background SVGs are transparent line artwork, allowing the same assets to adapt to both themes without maintaining duplicate light and dark images.
-
-## Responsive Behavior
-
-Desktop (`> 900px`):
-
-- panels are arranged horizontally
-- vertical page scrolling drives horizontal movement
-- the dominant panel settles into place after scrolling stops
-
-Mobile (`≤ 900px`):
-
-- panels stack vertically
-- navigation follows normal document scrolling
-- a dedicated vertical SVG background is used
-- project gallery covers move into the normal document flow
-
-## Accessibility
-
-The portfolio includes:
-
-- semantic section and navigation structure
-- descriptive `aria-label` attributes on controls
-- keyboard navigation for desktop sections
-- Escape-key support for closing galleries and image viewers
-- visible focus-capable buttons and links
-- reduced-motion handling
-- alt text for project covers and gallery screenshots
-
-## External Dependencies
-
-The site loads the following libraries and fonts from public CDNs:
-
-- GSAP
-- GSAP ScrollTrigger
-- Lenis
-- Bricolage Grotesque
-- IBM Plex Mono
-- Syne
-- Cascadia Code
-
-The core content remains readable if animation libraries fail to load, but an internet connection is required for the CDN-hosted typography and enhanced scrolling libraries unless they are self-hosted later.
-
-## License
-
-No open-source license is included with this portfolio. Unless a license is added, the source code, project descriptions, branding and visual assets should be treated as all rights reserved.
+Existing fonts load from their CDNs. Verified in Chromium browser emulation:
+the restored v39 scroll behavior, vertical wheel easing, all 69 gallery
+images and the full-size viewer, both themes, reduced motion, native desktop
+fallback, horizontal navigation and responsive layouts. Layout checks cover
+320×568, 390×844, 430×932, 768×1024, 932×430 and 1440×900 viewports.
+The cleaned desktop render was also compared pixel for pixel with the source.
